@@ -4,13 +4,11 @@ import { MarketplaceProduct } from '../types';
 
 interface MarketplaceViewProps {
   products: MarketplaceProduct[];
-  onNavigateToDashboard: () => void;
   onPurchase: (product: MarketplaceProduct, qty: number) => void;
 }
 
 export default function MarketplaceView({
   products,
-  onNavigateToDashboard,
   onPurchase,
 }: MarketplaceViewProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>('Semua');
@@ -63,42 +61,6 @@ export default function MarketplaceView({
           <span className="text-sm font-semibold">{successMessage}</span>
         </div>
       )}
-
-      {/* Hero Welcome & Name Switcher Banner */}
-      <section className="bg-gradient-to-r from-[#003b49] via-[#005c73] to-[#0a4d5c] text-white rounded-3xl p-6 sm:p-8 relative overflow-hidden shadow-lg border border-[#60d7ff]/10">
-        <div className="absolute right-0 top-0 bottom-0 w-1/3 opacity-15 pointer-events-none bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-yellow-300 via-teal-500 to-transparent rounded-full" />
-        
-        <div className="max-w-2xl relative z-10">
-          <span className="inline-flex items-center gap-1.5 bg-[#60d7ff]/20 text-[#60d7ff] text-[10px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full border border-[#60d7ff]/20 mb-4">
-            <Sparkles className="w-3.5 h-3.5 animate-pulse" /> Hub Koperasi Desa Digital
-          </span>
-          
-          <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight mb-2">
-            Selamat Datang di <span onClick={onNavigateToDashboard} className="underline decoration-wavy decoration-[#60d7ff] cursor-pointer hover:text-[#60d7ff] transition-all" title="Klik untuk membuka Dashboard Pengurus">SinergiDesa</span>
-          </h2>
-          
-          <p className="text-xs sm:text-sm text-gray-200 mb-6 leading-relaxed">
-            Marketplace digital terpercaya yang menyatukan seluruh komoditas tani unggul, pupuk subsidi tervalidasi, dan benih bersertifikat antar desa.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-3">
-            <button
-              onClick={onNavigateToDashboard}
-              className="bg-white text-[#003b49] font-bold text-xs sm:text-sm px-5 py-3 rounded-xl hover:bg-gray-100 transition-all flex items-center justify-center gap-2 shadow-md active:scale-95"
-            >
-              Masuk ke Dashboard Pengurus <ArrowRight className="w-4 h-4 text-[#006780]" />
-            </button>
-            <div className="flex items-center gap-2 text-xs text-gray-300 bg-black/20 px-4 py-2.5 rounded-xl border border-white/5 justify-center sm:justify-start">
-              <ShieldCheck className="w-4 h-4 text-[#60d7ff]" /> Verified Escrow Protection
-            </div>
-          </div>
-        </div>
-
-        {/* Small hint label */}
-        <div className="absolute bottom-3 right-4 text-[10px] text-gray-300/80 hidden lg:block">
-          💡 Klik judul <span onClick={onNavigateToDashboard} className="underline font-bold text-white hover:text-[#60d7ff] cursor-pointer transition-colors">SinergiDesa</span> untuk berpindah ke Panel Pengurus Koperasi
-        </div>
-      </section>
 
       {/* Filter & Search Bar */}
       <section className="bg-white p-4 rounded-2xl border border-[#bfc8cc] shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">

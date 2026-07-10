@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LayoutDashboard, Receipt, Truck, Users, Settings, LogOut, Menu, X, Leaf, Sparkles } from 'lucide-react';
+import { LayoutDashboard, Receipt, Truck, Users, Settings, LogOut, Menu, X, Leaf, Sparkles, ShoppingBag } from 'lucide-react';
 import { ActiveTab } from '../types';
 
 interface SidebarProps {
@@ -11,9 +11,17 @@ interface SidebarProps {
 
 export default function Sidebar({ activeTab, setActiveTab, actionItemCount, onBrandClick }: SidebarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [selectedRole, setSelectedRole] = useState(0);
+
+  const demoRoles = [
+    { name: 'Admin Kop. Argosari', location: 'Banyuwangi' },
+    { name: 'Admin Kop. Suka Makmur', location: 'Jember' },
+    { name: 'Admin Kop. Tani Jaya', location: 'Lumajang' },
+  ];
 
   const mainNavItems = [
     { id: 'beranda' as ActiveTab, label: 'Beranda', icon: LayoutDashboard },
+    { id: 'marketplace' as ActiveTab, label: 'Marketplace', icon: ShoppingBag },
     { id: 'transaksi' as ActiveTab, label: 'Transaksi', icon: Receipt, badge: actionItemCount > 0 ? actionItemCount : undefined },
     { id: 'logistik' as ActiveTab, label: 'Logistik', icon: Truck },
     { id: 'anggota' as ActiveTab, label: 'Anggota', icon: Users },
@@ -79,16 +87,17 @@ export default function Sidebar({ activeTab, setActiveTab, actionItemCount, onBr
         </div>
 
         {/* User Info inside Drawer */}
-        <div className="flex items-center gap-3 p-2 bg-[#eff4ff] rounded-lg">
-          <img
-            src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150"
-            alt="Admin Avatar"
-            className="w-10 h-10 rounded-full object-cover border border-[#bfc8cc]"
-          />
-          <div>
-            <h4 className="font-semibold text-sm text-[#003b49]">Admin Koperasi</h4>
-            <p className="text-xs text-[#40484c]">Pengurus Inti</p>
-          </div>
+        <div className="flex flex-col gap-2 p-3 bg-white border border-[#bfc8cc]/40 rounded-xl">
+          <label className="text-[10px] font-bold text-[#40484c] uppercase tracking-wider">Peran Aktif (Demo)</label>
+          <select 
+            value={selectedRole}
+            onChange={(e) => setSelectedRole(Number(e.target.value))}
+            className="w-full bg-[#f8f9ff] border border-[#bfc8cc] rounded-lg px-2 py-1.5 text-xs font-bold text-[#003b49] outline-none focus:border-[#003b49] cursor-pointer"
+          >
+            {demoRoles.map((role, idx) => (
+              <option key={idx} value={idx}>{role.name} ({role.location})</option>
+            ))}
+          </select>
         </div>
 
         {/* Navigation items in Drawer */}
@@ -159,16 +168,17 @@ export default function Sidebar({ activeTab, setActiveTab, actionItemCount, onBr
         </div>
 
         {/* Administrator Profile Card */}
-        <div className="flex items-center gap-3 px-3 py-2 bg-white/60 rounded-xl border border-[#bfc8cc]/30">
-          <img
-            src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150"
-            alt="Admin Avatar"
-            className="w-10 h-10 rounded-full object-cover border border-[#bfc8cc]"
-          />
-          <div>
-            <h4 className="font-bold text-xs text-[#003b49]">Admin Koperasi</h4>
-            <p className="text-[10px] text-[#40484c]">Pengurus Inti</p>
-          </div>
+        <div className="flex flex-col gap-2 p-3 bg-white/60 rounded-xl border border-[#bfc8cc]/30 shadow-sm">
+          <label className="text-[10px] font-bold text-[#40484c] uppercase tracking-wider">Peran Aktif (Demo)</label>
+          <select 
+            value={selectedRole}
+            onChange={(e) => setSelectedRole(Number(e.target.value))}
+            className="w-full bg-white border border-[#bfc8cc] rounded-lg px-2 py-2 text-xs font-bold text-[#003b49] outline-none focus:border-[#003b49] shadow-sm cursor-pointer"
+          >
+            {demoRoles.map((role, idx) => (
+              <option key={idx} value={idx}>{role.name} ({role.location})</option>
+            ))}
+          </select>
         </div>
 
         {/* Navigation Items list */}

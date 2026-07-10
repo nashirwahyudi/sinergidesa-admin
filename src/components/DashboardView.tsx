@@ -7,7 +7,7 @@ interface DashboardViewProps {
   metrics: MetricCard[];
   availableSupplies: AvailableSupply[];
   neededGoods: NeededGood[];
-  onActionClick: (actionKey: 'dual_witness' | 'sms_correction' | 'dispute') => void;
+  onActionClick: (actionKey: 'dual_witness' | 'dispute') => void;
   onSendSupply: (supplyId: string, name: string) => void;
   onFulfillNeed: (needId: string, name: string) => void;
   pipelineData: {

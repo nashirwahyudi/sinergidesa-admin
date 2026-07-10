@@ -1,4 +1,4 @@
-import { ActionItem, EscrowTransaction, RawSms, MemberTransaction, ReturnTripOpportunity, TruckFleet, MarketplaceProduct, AvailableSupply, NeededGood } from './types';
+import { ActionItem, EscrowTransaction, MemberTransaction, ReturnTripOpportunity, TruckFleet, MarketplaceProduct, AvailableSupply, NeededGood } from './types';
 
 export const initialActionItems: ActionItem[] = [
   {
@@ -10,18 +10,10 @@ export const initialActionItems: ActionItem[] = [
     actionKey: 'dual_witness'
   },
   {
-    id: 'act-2',
-    type: 'error',
-    title: '2 pesan gagal diparse, butuh koreksi manual',
-    description: "SMS dari +62 812-****-4432: 'Kirim gabah 5 ton...' [Gagal]",
-    buttonText: 'Koreksi',
-    actionKey: 'sms_correction'
-  },
-  {
     id: 'act-3',
     type: 'gavel',
     title: '1 sengketa escrow tertahan 2 hari',
-    description: 'Penerima menolak konfirmasi muatan belerang 5 ton · dana Rp 18,5 jt terkunci',
+    description: 'Penerima menolak konfirmasi muatan belerang 5 ton · dana Rp 18,5 jt tertahan',
     buttonText: 'Tangani',
     actionKey: 'dispute'
   }
@@ -76,35 +68,6 @@ export const initialEscrowTransactions: EscrowTransaction[] = [
     remindersSent: 0,
     escrowId: 'ESC-2293',
     hashLedger: '#b4a1…8e22'
-  }
-];
-
-export const initialRawSms: RawSms[] = [
-  {
-    id: 'sms-1',
-    rawText: 'JUAL#GABH#2TON#RP11500',
-    senderPhone: '+62 812-****-4432',
-    senderName: 'Bapak Suroto',
-    receivedTime: '10 Juli, 08:45 WIB',
-    action: 'JUAL',
-    commodity: 'GABAH',
-    typoDetected: 'GABH',
-    quantity: '2.000 kg',
-    pricePerKg: 'Rp 11.500',
-    isCorrected: false
-  },
-  {
-    id: 'sms-2',
-    rawText: 'BELI#PUPK#500KG#RP9000',
-    senderPhone: '+62 857-****-1109',
-    senderName: 'Ibu Warsi',
-    receivedTime: '10 Juli, 09:12 WIB',
-    action: 'BELI',
-    commodity: 'PUPUK',
-    typoDetected: 'PUPK',
-    quantity: '500 kg',
-    pricePerKg: 'Rp 9.000',
-    isCorrected: false
   }
 ];
 

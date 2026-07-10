@@ -1,4 +1,4 @@
-export type ActiveTab = 'beranda' | 'transaksi' | 'logistik' | 'anggota' | 'laporan' | 'pengaturan';
+export type ActiveTab = 'beranda' | 'transaksi' | 'logistik' | 'anggota' | 'laporan' | 'pengaturan' | 'marketplace';
 
 export interface ActionItem {
   id: string;
@@ -6,7 +6,7 @@ export interface ActionItem {
   title: string;
   description: string;
   buttonText: string;
-  actionKey: 'dual_witness' | 'sms_correction' | 'dispute';
+  actionKey: 'dual_witness' | 'dispute';
 }
 
 export interface MetricCard {
@@ -34,20 +34,6 @@ export interface EscrowTransaction {
   escrowId: string;
   hashLedger: string;
   isDisputed?: boolean;
-}
-
-export interface RawSms {
-  id: string;
-  rawText: string;
-  senderPhone: string;
-  senderName: string;
-  receivedTime: string;
-  action: 'JUAL' | 'BELI';
-  commodity: string;
-  typoDetected?: string;
-  quantity: string;
-  pricePerKg: string;
-  isCorrected: boolean;
 }
 
 export interface MemberTransaction {
@@ -106,4 +92,14 @@ export interface TruckFleet {
   status: 'perjalanan' | 'standby' | 'bongkar';
   currentRoute?: string;
   loadType?: string;
+}
+
+export interface NotificationOrder {
+  id: string;
+  name: string;
+  quantity: string;
+  totalPrice: number;
+  partnerCooperative: string;
+  status: 'Menunggu konfirmasi' | 'diproses' | 'dikirim' | 'selesai' | 'bermasalah/sengketa';
+  date: string;
 }
