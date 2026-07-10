@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { Search, ShoppingCart, Filter, ArrowRight, ShieldCheck, CheckCircle, Info, Sparkles, AlertCircle, ShoppingBag } from 'lucide-react';
+import { Search, ShoppingCart, Filter, ArrowRight, ShieldCheck, CheckCircle, Info, Sparkles, AlertCircle, ShoppingBag, PackagePlus } from 'lucide-react';
 import { MarketplaceProduct } from '../types';
 
 interface MarketplaceViewProps {
   products: MarketplaceProduct[];
   onPurchase: (product: MarketplaceProduct, qty: number) => void;
+  onNavigateToInputStock: () => void;
 }
 
 export default function MarketplaceView({
   products,
   onPurchase,
+  onNavigateToInputStock,
 }: MarketplaceViewProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>('Semua');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -63,7 +65,7 @@ export default function MarketplaceView({
       )}
 
       {/* Filter & Search Bar */}
-      <section className="bg-white p-4 rounded-2xl border border-[#bfc8cc] shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
+      <section className="bg-white p-4 rounded-2xl border border-[#bfc8cc] shadow-sm flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4">
         {/* Category Buttons */}
         <div className="flex flex-wrap gap-1.5 w-full md:w-auto">
           {categories.map((cat) => (
@@ -81,16 +83,24 @@ export default function MarketplaceView({
           ))}
         </div>
 
-        {/* Search Input */}
-        <div className="relative w-full md:w-80 shrink-0">
-          <input
-            type="text"
-            placeholder="Cari komoditas, pupuk, atau benih..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-[#f8f9ff] border border-[#bfc8cc] rounded-xl pl-9 pr-4 py-2 text-xs sm:text-sm font-semibold focus:border-[#003b49] focus:ring-2 focus:ring-[#003b49]/10 outline-none transition-all"
-          />
-          <Search className="w-4 h-4 text-[#70787c] absolute left-3 top-1/2 -translate-y-1/2" />
+        {/* Search Input and Input Stock Button */}
+        <div className="flex flex-col md:flex-row w-full xl:w-auto items-stretch md:items-center gap-3">
+          <div className="relative w-full md:w-64 lg:w-80">
+            <input
+              type="text"
+              placeholder="Cari komoditas, pupuk, atau benih..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-[#f8f9ff] border border-[#bfc8cc] rounded-xl pl-9 pr-4 py-2 text-xs sm:text-sm font-semibold focus:border-[#003b49] focus:ring-2 focus:ring-[#003b49]/10 outline-none transition-all"
+            />
+            <Search className="w-4 h-4 text-[#70787c] absolute left-3 top-1/2 -translate-y-1/2" />
+          </div>
+          <button 
+            onClick={onNavigateToInputStock}
+            className="shrink-0 whitespace-nowrap bg-[#003b49] text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shadow-sm hover:bg-[#005c73] transition-all flex justify-center items-center gap-2"
+          >
+            <PackagePlus className="w-4 h-4" /> Input Stok
+          </button>
         </div>
       </section>
 

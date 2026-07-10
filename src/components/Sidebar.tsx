@@ -1,27 +1,34 @@
 import React, { useState } from 'react';
-import { LayoutDashboard, Receipt, Truck, Users, Settings, LogOut, Menu, X, Leaf, Sparkles, ShoppingBag } from 'lucide-react';
+import { LayoutDashboard, Receipt, Truck, Users, Settings, LogOut, Menu, X, Leaf, Sparkles, ShoppingBag, PackagePlus } from 'lucide-react';
 import { ActiveTab } from '../types';
+
+export interface DemoRole {
+  name: string;
+  location: string;
+  koperasi: string;
+}
+
+export const DEMO_ROLES: DemoRole[] = [
+  { name: 'Admin Kop. Argosari', location: 'Banyuwangi', koperasi: 'Kop. Argosari' },
+  { name: 'Admin Kop. Tirtomulyo', location: 'Jember', koperasi: 'Kop. Tirtomulyo' },
+];
 
 interface SidebarProps {
   activeTab: ActiveTab;
   setActiveTab: (tab: ActiveTab) => void;
   actionItemCount: number;
-  onBrandClick?: () => void;
+  onBrandClick: () => void;
+  selectedRoleIndex: number;
+  onRoleChange: (index: number) => void;
 }
 
-export default function Sidebar({ activeTab, setActiveTab, actionItemCount, onBrandClick }: SidebarProps) {
+export default function Sidebar({ activeTab, setActiveTab, actionItemCount, onBrandClick, selectedRoleIndex, onRoleChange }: SidebarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [selectedRole, setSelectedRole] = useState(0);
-
-  const demoRoles = [
-    { name: 'Admin Kop. Argosari', location: 'Banyuwangi' },
-    { name: 'Admin Kop. Suka Makmur', location: 'Jember' },
-    { name: 'Admin Kop. Tani Jaya', location: 'Lumajang' },
-  ];
 
   const mainNavItems = [
     { id: 'beranda' as ActiveTab, label: 'Beranda', icon: LayoutDashboard },
     { id: 'marketplace' as ActiveTab, label: 'Marketplace', icon: ShoppingBag },
+    { id: 'inventaris' as ActiveTab, label: 'Stok Barang', icon: PackagePlus },
     { id: 'transaksi' as ActiveTab, label: 'Transaksi', icon: Receipt, badge: actionItemCount > 0 ? actionItemCount : undefined },
     { id: 'logistik' as ActiveTab, label: 'Logistik', icon: Truck },
     { id: 'anggota' as ActiveTab, label: 'Anggota', icon: Users },
@@ -90,11 +97,11 @@ export default function Sidebar({ activeTab, setActiveTab, actionItemCount, onBr
         <div className="flex flex-col gap-2 p-3 bg-white border border-[#bfc8cc]/40 rounded-xl">
           <label className="text-[10px] font-bold text-[#40484c] uppercase tracking-wider">Peran Aktif (Demo)</label>
           <select 
-            value={selectedRole}
-            onChange={(e) => setSelectedRole(Number(e.target.value))}
+            value={selectedRoleIndex}
+            onChange={(e) => onRoleChange(Number(e.target.value))}
             className="w-full bg-[#f8f9ff] border border-[#bfc8cc] rounded-lg px-2 py-1.5 text-xs font-bold text-[#003b49] outline-none focus:border-[#003b49] cursor-pointer"
           >
-            {demoRoles.map((role, idx) => (
+            {DEMO_ROLES.map((role, idx) => (
               <option key={idx} value={idx}>{role.name} ({role.location})</option>
             ))}
           </select>
@@ -171,11 +178,11 @@ export default function Sidebar({ activeTab, setActiveTab, actionItemCount, onBr
         <div className="flex flex-col gap-2 p-3 bg-white/60 rounded-xl border border-[#bfc8cc]/30 shadow-sm">
           <label className="text-[10px] font-bold text-[#40484c] uppercase tracking-wider">Peran Aktif (Demo)</label>
           <select 
-            value={selectedRole}
-            onChange={(e) => setSelectedRole(Number(e.target.value))}
+            value={selectedRoleIndex}
+            onChange={(e) => onRoleChange(Number(e.target.value))}
             className="w-full bg-white border border-[#bfc8cc] rounded-lg px-2 py-2 text-xs font-bold text-[#003b49] outline-none focus:border-[#003b49] shadow-sm cursor-pointer"
           >
-            {demoRoles.map((role, idx) => (
+            {DEMO_ROLES.map((role, idx) => (
               <option key={idx} value={idx}>{role.name} ({role.location})</option>
             ))}
           </select>

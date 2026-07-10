@@ -1,11 +1,12 @@
 import React, { useState, useMemo } from 'react';
-import Sidebar from './components/Sidebar';
+import Sidebar, { DEMO_ROLES } from './components/Sidebar';
 import Header from './components/Header';
 import DashboardView from './components/DashboardView';
 import DualWitnessView from './components/DualWitnessView';
 import MemberHistoryView from './components/MemberHistoryView';
 import MarketplaceView from './components/MarketplaceView';
-import { ActiveTab, ActionItem, EscrowTransaction, MemberTransaction, ReturnTripOpportunity, TruckFleet, MetricCard, MarketplaceProduct, AvailableSupply, NeededGood, NotificationOrder } from './types';
+import InventoryView from './components/InventoryView';
+import { ActiveTab, ActionItem, EscrowTransaction, MemberTransaction, ReturnTripOpportunity, TruckFleet, MetricCard, MarketplaceProduct, AvailableSupply, NeededGood, NotificationOrder, StockItem } from './types';
 import {
   initialActionItems,
   initialEscrowTransactions,
@@ -31,6 +32,44 @@ export default function App() {
   const [truckFleets, setTruckFleets] = useState<TruckFleet[]>(initialTruckFleets);
   const [memberTransactions, setMemberTransactions] = useState<MemberTransaction[]>(initialMemberTransactions);
   const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
+  const [selectedRoleIndex, setSelectedRoleIndex] = useState(0);
+  const currentKoperasi = DEMO_ROLES[selectedRoleIndex].koperasi;
+  const [inventoryViewMode, setInventoryViewMode] = useState<'list' | 'form'>('list');
+
+  const [stocks, setStocks] = useState<StockItem[]>([
+    {
+      id: 'stk-1',
+      komoditas: 'Pupuk Urea Bersubsidi',
+      satuan: 'Ton',
+      berat: 15,
+      hargaBeli: 2250000,
+      images: ['https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&q=80&w=300'],
+      catatan: 'Pupuk alokasi bulan berjalan, kualitas baik.',
+      lastSync: 'Hari ini, 08:30',
+      koperasi: 'Kop. Argosari'
+    },
+    {
+      id: 'stk-2',
+      komoditas: 'Benih Padi Ciherang',
+      satuan: 'Kwintal',
+      berat: 5,
+      hargaBeli: 950000,
+      images: ['https://images.unsplash.com/photo-1595113316349-944122bc158b?auto=format&fit=crop&q=80&w=300'],
+      catatan: 'Sertifikat masih berlaku hingga tahun depan.',
+      lastSync: 'Kemarin, 14:15',
+      koperasi: 'Kop. Tirtomulyo'
+    }
+  ]);
+
+  const handleAddStock = (newStock: Omit<StockItem, 'id' | 'lastSync' | 'koperasi'>) => {
+    const item: StockItem = {
+      ...newStock,
+      id: `stk-${Date.now()}`,
+      lastSync: 'Baru saja',
+      koperasi: currentKoperasi
+    };
+    setStocks(prev => [item, ...prev]);
+  };
 
   // Notification lists state (Orders and Sells)
   const [orders, setOrders] = useState<NotificationOrder[]>([
@@ -41,7 +80,8 @@ export default function App() {
       totalPrice: 14400000,
       partnerCooperative: 'Kop. Argosari',
       status: 'Menunggu konfirmasi',
-      date: 'Hari ini, 09.20'
+      date: 'Hari ini, 09.20',
+      koperasi: Math.random() > 0.5 ? 'Kop. Argosari' : 'Kop. Tirtomulyo'
     },
     {
       id: 'ORD-002',
@@ -50,7 +90,8 @@ export default function App() {
       totalPrice: 2500000,
       partnerCooperative: 'Kop. Tirtomulyo',
       status: 'diproses',
-      date: 'Kemarin, 14.15'
+      date: 'Kemarin, 14.15',
+      koperasi: Math.random() > 0.5 ? 'Kop. Argosari' : 'Kop. Tirtomulyo'
     },
     {
       id: 'ORD-003',
@@ -59,7 +100,8 @@ export default function App() {
       totalPrice: 1800000,
       partnerCooperative: 'Kop. Suka Makmur',
       status: 'dikirim',
-      date: '08 Jul, 10.30'
+      date: '08 Jul, 10.30',
+      koperasi: Math.random() > 0.5 ? 'Kop. Argosari' : 'Kop. Tirtomulyo'
     },
     {
       id: 'ORD-004',
@@ -68,7 +110,8 @@ export default function App() {
       totalPrice: 9000000,
       partnerCooperative: 'Kop. Argosari',
       status: 'selesai',
-      date: '05 Jul, 16.00'
+      date: '05 Jul, 16.00',
+      koperasi: Math.random() > 0.5 ? 'Kop. Argosari' : 'Kop. Tirtomulyo'
     },
     {
       id: 'ORD-005',
@@ -77,7 +120,8 @@ export default function App() {
       totalPrice: 3700000,
       partnerCooperative: 'Kop. Argosari',
       status: 'bermasalah/sengketa',
-      date: '02 Jul, 11.45'
+      date: '02 Jul, 11.45',
+      koperasi: Math.random() > 0.5 ? 'Kop. Argosari' : 'Kop. Tirtomulyo'
     }
   ]);
 
@@ -89,7 +133,8 @@ export default function App() {
       totalPrice: 7500000,
       partnerCooperative: 'Kop. Tani Jaya',
       status: 'Menunggu konfirmasi',
-      date: 'Hari ini, 08.45'
+      date: 'Hari ini, 08.45',
+      koperasi: Math.random() > 0.5 ? 'Kop. Argosari' : 'Kop. Tirtomulyo'
     },
     {
       id: 'SEL-002',
@@ -98,7 +143,8 @@ export default function App() {
       totalPrice: 12000000,
       partnerCooperative: 'Kop. Makmur Sejahtera',
       status: 'diproses',
-      date: 'Kemarin, 11.20'
+      date: 'Kemarin, 11.20',
+      koperasi: Math.random() > 0.5 ? 'Kop. Argosari' : 'Kop. Tirtomulyo'
     },
     {
       id: 'SEL-003',
@@ -107,7 +153,8 @@ export default function App() {
       totalPrice: 9000000,
       partnerCooperative: 'Kop. Agro Lestari',
       status: 'dikirim',
-      date: '08 Jul, 15.10'
+      date: '08 Jul, 15.10',
+      koperasi: Math.random() > 0.5 ? 'Kop. Argosari' : 'Kop. Tirtomulyo'
     },
     {
       id: 'SEL-004',
@@ -116,7 +163,8 @@ export default function App() {
       totalPrice: 18000000,
       partnerCooperative: 'Kop. Tani Makmur',
       status: 'selesai',
-      date: '04 Jul, 09.15'
+      date: '04 Jul, 09.15',
+      koperasi: Math.random() > 0.5 ? 'Kop. Argosari' : 'Kop. Tirtomulyo'
     },
     {
       id: 'SEL-005',
@@ -125,7 +173,8 @@ export default function App() {
       totalPrice: 8800000,
       partnerCooperative: 'Kop. Agro Subur',
       status: 'bermasalah/sengketa',
-      date: '01 Jul, 14.30'
+      date: '01 Jul, 14.30',
+      koperasi: Math.random() > 0.5 ? 'Kop. Argosari' : 'Kop. Tirtomulyo'
     }
   ]);
 
@@ -234,7 +283,8 @@ export default function App() {
       quantity: `${qty.toLocaleString('id-ID')} kg`,
       price: product.price,
       destinationKoperasi: 'Koperasi Pembeli',
-      status: 'Tersedia'
+      status: 'Tersedia',
+      koperasi: currentKoperasi
     };
     setAvailableSupplies(prev => [newSupply, ...prev]);
 
@@ -246,7 +296,8 @@ export default function App() {
       totalPrice: product.price * qty,
       partnerCooperative: 'Kop. Argosari',
       status: 'Menunggu konfirmasi',
-      date: 'Baru saja'
+      date: 'Baru saja',
+      koperasi: Math.random() > 0.5 ? 'Kop. Argosari' : 'Kop. Tirtomulyo'
     };
     setOrders(prev => [newOrder, ...prev]);
   };
@@ -273,25 +324,36 @@ export default function App() {
     }
   };
 
+  const computedEscrow = useMemo(() => escrowTransactions.filter(t => t.receiver === currentKoperasi || t.sender === currentKoperasi), [escrowTransactions, currentKoperasi]);
+  const computedMarketplace = useMemo(() => marketplaceProducts.filter(p => p.koperasi === currentKoperasi), [marketplaceProducts, currentKoperasi]);
+  const computedSupplies = useMemo(() => availableSupplies.filter(s => s.koperasi === currentKoperasi || s.destinationKoperasi === currentKoperasi), [availableSupplies, currentKoperasi]);
+  const computedNeeded = useMemo(() => neededGoods.filter(n => n.koperasi === currentKoperasi || n.requesterKoperasi === currentKoperasi), [neededGoods, currentKoperasi]);
+  const computedStocks = useMemo(() => stocks.filter(s => s.koperasi === currentKoperasi), [stocks, currentKoperasi]);
+  const filteredTrucks = useMemo(() => truckFleets.filter(t => t.koperasi === currentKoperasi), [truckFleets, currentKoperasi]);
+  const filteredMemberTrx = useMemo(() => memberTransactions.filter(m => m.koperasi === currentKoperasi), [memberTransactions, currentKoperasi]);
+  const filteredOrders = useMemo(() => orders.filter(o => o.koperasi === currentKoperasi), [orders, currentKoperasi]);
+  const filteredSells = useMemo(() => sells.filter(s => s.koperasi === currentKoperasi), [sells, currentKoperasi]);
+  const filteredOpps = useMemo(() => opportunities.filter(o => o.koperasi === currentKoperasi), [opportunities, currentKoperasi]);
+
   // REACTIVE CALCULATION: Action Items banner list
   const activeActionItems = useMemo(() => {
     const items: ActionItem[] = [];
 
     // Count pending dual-witness items
-    const pendingDualWitnessCount = escrowTransactions.filter(t => !t.receiverConfirmed).length;
+    const pendingDualWitnessCount = computedEscrow.filter(t => !t.receiverConfirmed).length;
     if (pendingDualWitnessCount > 0) {
       items.push({
         id: 'act-1',
         type: 'warning',
         title: `${pendingDualWitnessCount} transaksi menunggu konfirmasi dual-witness`,
-        description: `Terlama: kiriman gabah 2 ton ke Kop. Argosari, menunggu 26 jam`,
+        description: `Terlama: kiriman komoditas ke ${currentKoperasi}, menunggu 26 jam`,
         buttonText: 'Lihat',
         actionKey: 'dual_witness'
       });
     }
 
     // Check if there are disputes active
-    const activeDisputesCount = escrowTransactions.filter(t => t.isDisputed).length;
+    const activeDisputesCount = computedEscrow.filter(t => t.isDisputed).length;
     if (activeDisputesCount > 0) {
       items.push({
         id: 'act-3',
@@ -304,12 +366,12 @@ export default function App() {
     }
 
     return items;
-  }, [escrowTransactions]);
+  }, [computedEscrow]);
 
   // REACTIVE CALCULATION: Metrics data cards
   const reactiveMetrics = useMemo(() => {
     // Escrow value calculation (sum of unconfirmed items)
-    const activeEscrowAmount = escrowTransactions
+    const activeEscrowAmount = computedEscrow
       .filter(t => !t.receiverConfirmed)
       .reduce((sum, t) => sum + t.amount, 0);
 
@@ -317,16 +379,16 @@ export default function App() {
       ? `Rp ${(activeEscrowAmount / 1000000).toFixed(1)} jt`
       : formatRupiah(activeEscrowAmount);
 
-    const activeEscrowCount = escrowTransactions.filter(t => !t.receiverConfirmed).length;
+    const activeEscrowCount = computedEscrow.filter(t => !t.receiverConfirmed).length;
 
     // Active fleet calculation
-    const activeTrucks = truckFleets.filter(f => f.status === 'perjalanan').length;
-    const totalTrucks = truckFleets.length;
+    const activeTrucks = filteredTrucks.filter(f => f.status === 'perjalanan').length;
+    const totalTrucks = filteredTrucks.length;
 
     const cards: MetricCard[] = [
       {
         title: 'Transaksi SinergiDesa',
-        value: `${47 + (initialEscrowTransactions.length - escrowTransactions.length)}`,
+        value: `${47 + (initialEscrowTransactions.length - computedEscrow.length)}`,
         subValue: '↑ 18% vs minggu lalu',
         isPositive: true
       },
@@ -345,13 +407,13 @@ export default function App() {
       {
         title: 'Armada aktif',
         value: `${activeTrucks} / ${totalTrucks}`,
-        subValue: `${truckFleets.filter(f => f.status === 'perjalanan').length} truk dalam perjalanan`,
+        subValue: `${filteredTrucks.filter(f => f.status === 'perjalanan').length} truk dalam perjalanan`,
         isPositive: activeTrucks === totalTrucks
       }
     ];
 
     return cards;
-  }, [escrowTransactions, truckFleets]);
+  }, [computedEscrow, filteredTrucks]);
 
   // Handle CTA button click from the main action banner
   const handleActionClick = (actionKey: 'dual_witness' | 'dispute') => {
@@ -370,6 +432,11 @@ export default function App() {
         return {
           title: 'Marketplace SinergiDesa',
           subtitle: 'Jumat, 10 Juli 2026 · Katalog komoditas tani unggul, pupuk, dan benih antar koperasi desa'
+        };
+      case 'inventaris':
+        return {
+          title: 'Stok Barang & Inventaris',
+          subtitle: 'Jumat, 10 Juli 2026 · Manajemen stok komoditas dan sinkronisasi data gudang'
         };
       case 'transaksi':
         return {
@@ -407,10 +474,12 @@ export default function App() {
         setActiveTab={(tab) => {
           setActiveTab(tab);
         }}
-        actionItemCount={activeActionItems.length}
+        actionItemCount={computedEscrow.filter(t => t.receiverConfirmed === false).length}
         onBrandClick={() => {
           setActiveTab('beranda');
         }}
+        selectedRoleIndex={selectedRoleIndex}
+        onRoleChange={setSelectedRoleIndex}
       />
 
       {/* Main Content Area */}
@@ -434,30 +503,43 @@ export default function App() {
             <DashboardView
               actionItems={activeActionItems}
               metrics={reactiveMetrics}
-              availableSupplies={availableSupplies}
-              neededGoods={neededGoods}
+              availableSupplies={computedSupplies}
+              neededGoods={computedNeeded}
               onActionClick={handleActionClick}
               onSendSupply={handleSendSupply}
               onFulfillNeed={handleFulfillNeed}
               pipelineData={{
-                incoming: escrowTransactions.filter(t => !t.receiverConfirmed).length + 1,
-                pending: escrowTransactions.filter(t => !t.receiverConfirmed).length,
-                ready: escrowTransactions.filter(t => t.receiverConfirmed).length + 2
+                incoming: computedEscrow.filter(t => !t.receiverConfirmed).length + 1,
+                pending: computedEscrow.filter(t => !t.receiverConfirmed).length,
+                ready: computedEscrow.filter(t => t.receiverConfirmed).length + 2
               }}
             />
           )}
 
           {activeTab === 'marketplace' && (
             <MarketplaceView
-              products={marketplaceProducts}
+              products={computedMarketplace}
               onPurchase={handlePurchaseProduct}
+              onNavigateToInputStock={() => {
+                setInventoryViewMode('form');
+                setActiveTab('inventaris');
+              }}
+            />
+          )}
+
+          {activeTab === 'inventaris' && (
+            <InventoryView 
+              stocks={computedStocks}
+              onAddStock={handleAddStock}
+              viewMode={inventoryViewMode}
+              setViewMode={setInventoryViewMode}
             />
           )}
 
           {activeTab === 'transaksi' && (
             <div className="flex flex-col">
               <DualWitnessView
-                transactions={escrowTransactions}
+                transactions={computedEscrow}
                 onUpdateTransaction={handleUpdateTransaction}
                 onEscalateDispute={handleEscalateDispute}
               />
@@ -477,13 +559,13 @@ export default function App() {
                   </p>
                 </div>
                 <span className="bg-[#eff4ff] text-[#006780] border border-[#bfc8cc]/40 px-3.5 py-1.5 rounded-xl text-xs font-bold">
-                  Armada Beroperasi: {truckFleets.filter(f => f.status === 'perjalanan').length} / {truckFleets.length}
+                  Armada Beroperasi: {filteredTrucks.filter(f => f.status === 'perjalanan').length} / {filteredTrucks.length}
                 </span>
               </div>
 
               {/* Fleet List Grid */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {truckFleets.map((fleet) => (
+                {filteredTrucks.map((fleet) => (
                   <div
                     key={fleet.id}
                     className="bg-white rounded-2xl border border-[#bfc8cc] p-5 flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow duration-200"
@@ -535,7 +617,7 @@ export default function App() {
                   </div>
                 ) : (
                   <div className="divide-y divide-[#bfc8cc]/40">
-                    {opportunities.map((opp) => (
+                    {filteredOpps.map((opp) => (
                       <div key={opp.id} className="p-4 flex justify-between items-center hover:bg-[#eff4ff]/20 transition-all">
                         <div>
                           <p className="font-bold text-[#0b1c30] text-sm">{opp.route}</p>
@@ -564,7 +646,7 @@ export default function App() {
             <div className="p-0">
               {selectedMemberId ? (
                 <MemberHistoryView
-                  memberTransactions={memberTransactions}
+                  memberTransactions={filteredMemberTrx}
                   onBackClick={() => setSelectedMemberId(null)}
                 />
               ) : (

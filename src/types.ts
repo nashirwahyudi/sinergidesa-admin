@@ -1,4 +1,4 @@
-export type ActiveTab = 'beranda' | 'transaksi' | 'logistik' | 'anggota' | 'laporan' | 'pengaturan' | 'marketplace';
+export type ActiveTab = 'beranda' | 'transaksi' | 'logistik' | 'anggota' | 'laporan' | 'pengaturan' | 'marketplace' | 'inventaris';
 
 export interface ActionItem {
   id: string;
@@ -46,6 +46,7 @@ export interface MemberTransaction {
   status: 'SELESAI' | 'BERJALAN';
   location: string;
   handler: string;
+  koperasi: string;
 }
 
 export interface ReturnTripOpportunity {
@@ -54,6 +55,7 @@ export interface ReturnTripOpportunity {
   potentialSavings: string; // e.g. Potensi hemat Rp 450rb
   deadlineBadge: string; // e.g. JAWAB < 5 JAM
   isAmber?: boolean;
+  koperasi: string;
 }
 
 export interface MarketplaceProduct {
@@ -64,6 +66,7 @@ export interface MarketplaceProduct {
   category: 'Hasil Tani' | 'Pupuk & Obat' | 'Benih' | 'Peralatan';
   image: string;
   description: string;
+  koperasi: string;
 }
 
 export interface AvailableSupply {
@@ -73,6 +76,7 @@ export interface AvailableSupply {
   price: number;
   destinationKoperasi: string;
   status: 'Tersedia' | 'Siap Kirim' | 'Terkirim';
+  koperasi: string;
 }
 
 export interface NeededGood {
@@ -82,6 +86,7 @@ export interface NeededGood {
   targetPrice: number;
   requesterKoperasi: string;
   urgency: 'Tinggi' | 'Sedang' | 'Rendah';
+  koperasi: string;
 }
 
 export interface TruckFleet {
@@ -92,6 +97,19 @@ export interface TruckFleet {
   status: 'perjalanan' | 'standby' | 'bongkar';
   currentRoute?: string;
   loadType?: string;
+  koperasi: string;
+}
+
+export interface StockItem {
+  id: string;
+  komoditas: string;
+  satuan: string;
+  berat: number;
+  hargaBeli: number;
+  images: string[];
+  catatan: string;
+  lastSync: string;
+  koperasi: string;
 }
 
 export interface NotificationOrder {
@@ -102,4 +120,5 @@ export interface NotificationOrder {
   partnerCooperative: string;
   status: 'Menunggu konfirmasi' | 'diproses' | 'dikirim' | 'selesai' | 'bermasalah/sengketa';
   date: string;
+  koperasi: string;
 }
