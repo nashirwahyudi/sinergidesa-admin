@@ -1,0 +1,109 @@
+export type ActiveTab = 'beranda' | 'transaksi' | 'logistik' | 'anggota' | 'laporan' | 'pengaturan';
+
+export interface ActionItem {
+  id: string;
+  type: 'warning' | 'error' | 'gavel';
+  title: string;
+  description: string;
+  buttonText: string;
+  actionKey: 'dual_witness' | 'sms_correction' | 'dispute';
+}
+
+export interface MetricCard {
+  title: string;
+  value: string;
+  subValue: string;
+  isPositive?: boolean;
+  isWarning?: boolean;
+}
+
+export interface EscrowTransaction {
+  id: string; // e.g. TRX-0712-018
+  commodity: string; // e.g. Gabah 2 ton
+  sender: string; // Kop. Sumberrejo
+  receiver: string; // Kop. Argosari / Kop. Tirtomulyo
+  amount: number; // e.g. 24000000
+  timePending: string; // e.g. Menunggu 26 jam
+  timePendingHours: number;
+  senderConfirmed: boolean;
+  senderConfirmTime?: string;
+  senderGeotag?: string;
+  senderPhoto?: string;
+  receiverConfirmed: boolean;
+  remindersSent: number;
+  escrowId: string;
+  hashLedger: string;
+  isDisputed?: boolean;
+}
+
+export interface RawSms {
+  id: string;
+  rawText: string;
+  senderPhone: string;
+  senderName: string;
+  receivedTime: string;
+  action: 'JUAL' | 'BELI';
+  commodity: string;
+  typoDetected?: string;
+  quantity: string;
+  pricePerKg: string;
+  isCorrected: boolean;
+}
+
+export interface MemberTransaction {
+  id: string;
+  date: string;
+  commodity: 'Gabah' | 'Jagung';
+  quantityKg: number;
+  pricePerKg: number;
+  totalValue: number;
+  status: 'SELESAI' | 'BERJALAN';
+  location: string;
+  handler: string;
+}
+
+export interface ReturnTripOpportunity {
+  id: string;
+  route: string; // e.g. Surabaya -> Sumberrejo (Besok)
+  potentialSavings: string; // e.g. Potensi hemat Rp 450rb
+  deadlineBadge: string; // e.g. JAWAB < 5 JAM
+  isAmber?: boolean;
+}
+
+export interface MarketplaceProduct {
+  id: string;
+  name: string;
+  price: number;
+  quantity: string;
+  category: 'Hasil Tani' | 'Pupuk & Obat' | 'Benih' | 'Peralatan';
+  image: string;
+  description: string;
+}
+
+export interface AvailableSupply {
+  id: string;
+  name: string;
+  quantity: string;
+  price: number;
+  destinationKoperasi: string;
+  status: 'Tersedia' | 'Siap Kirim' | 'Terkirim';
+}
+
+export interface NeededGood {
+  id: string;
+  name: string;
+  quantityNeeded: string;
+  targetPrice: number;
+  requesterKoperasi: string;
+  urgency: 'Tinggi' | 'Sedang' | 'Rendah';
+}
+
+export interface TruckFleet {
+  id: string;
+  plateNumber: string;
+  driver: string;
+  capacity: string;
+  status: 'perjalanan' | 'standby' | 'bongkar';
+  currentRoute?: string;
+  loadType?: string;
+}

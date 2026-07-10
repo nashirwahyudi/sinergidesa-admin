@@ -1,0 +1,6 @@
+{
+  "name": "SinergiDesa",
+  "description": "Sistem Dashboard SinergiDesa untuk mengelola transaksi, logistik, dan marketplace antar koperasi secara efisien dan transparan.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
