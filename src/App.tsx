@@ -592,47 +592,7 @@ export default function App() {
                   </div>
                 ))}
               </div>
-
-              {/* Matching Engine Panel */}
-              <div className="bg-white rounded-2xl border border-[#bfc8cc] shadow-sm overflow-hidden mt-2">
-                <div className="p-4 border-b border-[#bfc8cc]/60 bg-[#f8f9ff]">
-                  <h4 className="font-bold text-sm text-[#003b49] uppercase tracking-wider">
-                    Peluang Muatan Balik Yang Tersedia
-                  </h4>
-                  <p className="text-[11px] text-[#40484c] mt-0.5">
-                    Sistem mencocokkan rute perjalanan truk yang kosong setelah bongkar muatan di kota dengan kebutuhan pengiriman mitra terdekat.
-                  </p>
-                </div>
-                {opportunities.length === 0 ? (
-                  <div className="p-10 text-center text-[#40484c] flex flex-col items-center gap-2">
-                    <CheckCircle2 className="w-8 h-8 text-[#15803d]" />
-                    <p className="text-sm font-bold text-[#003b49]">Semua peluang muatan balik terproses!</p>
-                    <p className="text-xs">Armada terdistribusi optimal untuk efisiensi BBM.</p>
-                  </div>
-                ) : (
-                  <div className="divide-y divide-[#bfc8cc]/40">
-                    {filteredOpps.map((opp) => (
-                      <div key={opp.id} className="p-4 flex justify-between items-center hover:bg-[#eff4ff]/20 transition-all">
-                        <div>
-                          <p className="font-bold text-[#0b1c30] text-sm">{opp.route}</p>
-                          <p className="text-xs text-[#006780] font-bold mt-0.5">{opp.potentialSavings}</p>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <span className="text-[9px] font-extrabold bg-[#fef3c7] text-[#b45309] px-2.5 py-1 rounded-full uppercase tracking-wider">
-                            {opp.deadlineBadge}
-                          </span>
-                          <button
-                            onClick={() => handleAcceptOpportunity(opp.id, opp.route, opp.potentialSavings)}
-                            className="bg-[#003b49] text-white hover:bg-[#005c73] font-bold text-xs px-3 py-1.5 rounded-lg transition-colors active:scale-95"
-                          >
-                            Ambil Peluang
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+              
             </div>
           )}
 
