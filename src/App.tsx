@@ -301,7 +301,7 @@ export default function App() {
         return viewMode === 'marketplace'
           ? {
               title: 'Marketplace SinergiDesa',
-              subtitle: 'Jumat, 10 Juli 2026 · Katalog komoditas tani unggul, pupuk, dan benih antar koperasi desa'
+              subtitle: 'Jumat, 10 Juli 2026 · Katalog komoditas unggul koperasi desa'
             }
           : {
               title: 'Dashboard Pengurus SinergiDesa',
@@ -310,7 +310,7 @@ export default function App() {
       case 'transaksi':
         return {
           title: activeSubTab === 'dual_witness' ? 'Menunggu konfirmasi dual-witness' : 'Koreksi Pesan SMS Gateway',
-          subtitle: 'Validasi otomatisasi data timbangan dan SMS petani'
+          subtitle: 'Validasi otomatisasi data timbangan dan SMS'
         };
       case 'logistik':
         return {
