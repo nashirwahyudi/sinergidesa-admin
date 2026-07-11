@@ -278,7 +278,7 @@ export const initialMarketplaceProducts: MarketplaceProduct[] = [
     price: 7200,
     quantity: '15.000 kg',
     category: 'Hasil Tani',
-    image: 'https://images.unsplash.com/photo-1574325131876-a7999dc65f3f?auto=format&fit=crop&q=80&w=400',
+    image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&q=80&w=400',
     description: 'Gabah kering giling berkualitas super dengan kadar air < 14%. Hasil panen kelompok tani Suka Makmur Sumberrejo.',
     koperasi: 'Kop. Argosari'
   },
@@ -288,7 +288,7 @@ export const initialMarketplaceProducts: MarketplaceProduct[] = [
     price: 5500,
     quantity: '8.500 kg',
     category: 'Hasil Tani',
-    image: 'https://images.unsplash.com/photo-1551754626-787a241688ed?auto=format&fit=crop&q=80&w=400',
+    image: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&q=80&w=400',
     description: 'Jagung pipil kering dengan kadar air rendah, sangat cocok untuk kebutuhan pakan ternak maupun pengolahan industri.',
     koperasi: 'Kop. Argosari'
   },
