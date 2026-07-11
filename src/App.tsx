@@ -418,21 +418,6 @@ export default function App() {
   const headerContent = useMemo(() => {
     switch (activeTab) {
       case 'beranda':
-<<<<<<< HEAD
-        return viewMode === 'marketplace'
-          ? {
-              title: 'Marketplace SinergiDesa',
-              subtitle: 'Jumat, 10 Juli 2026 · Katalog komoditas unggul koperasi desa'
-            }
-          : {
-              title: 'Dashboard Pengurus SinergiDesa',
-              subtitle: 'Jumat, 10 Juli 2026 · panel pengurus koperasi tani dan manajemen timbangan digital'
-            };
-      case 'transaksi':
-        return {
-          title: activeSubTab === 'dual_witness' ? 'Menunggu konfirmasi dual-witness' : 'Koreksi Pesan SMS Gateway',
-          subtitle: 'Validasi otomatisasi data timbangan dan SMS'
-=======
         return {
           title: 'Dashboard Pengurus SinergiDesa',
           subtitle: 'Jumat, 10 Juli 2026 · panel pengurus koperasi tani dan manajemen timbangan digital'
@@ -451,7 +436,6 @@ export default function App() {
         return {
           title: 'Menunggu konfirmasi dual-witness',
           subtitle: 'Validasi otomatisasi data timbangan dan konfirmasi petani'
->>>>>>> 2673c2c4a0836d0abd178259a51dd82312b4544e
         };
       case 'logistik':
         return {
