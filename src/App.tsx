@@ -1,16 +1,15 @@
 import React, { useState, useMemo } from 'react';
-import Sidebar from './components/Sidebar';
+import Sidebar, { DEMO_ROLES } from './components/Sidebar';
 import Header from './components/Header';
 import DashboardView from './components/DashboardView';
 import DualWitnessView from './components/DualWitnessView';
-import MessageCorrectionView from './components/MessageCorrectionView';
 import MemberHistoryView from './components/MemberHistoryView';
 import MarketplaceView from './components/MarketplaceView';
-import { ActiveTab, ActionItem, EscrowTransaction, RawSms, MemberTransaction, ReturnTripOpportunity, TruckFleet, MetricCard, MarketplaceProduct, AvailableSupply, NeededGood } from './types';
+import InventoryView from './components/InventoryView';
+import { ActiveTab, ActionItem, EscrowTransaction, MemberTransaction, ReturnTripOpportunity, TruckFleet, MetricCard, MarketplaceProduct, AvailableSupply, NeededGood, NotificationOrder, StockItem } from './types';
 import {
   initialActionItems,
   initialEscrowTransactions,
-  initialRawSms,
   initialMemberTransactions,
   initialReturnTripOpportunities,
   initialTruckFleets,
@@ -23,19 +22,169 @@ import { Info, Truck, Check, ShieldCheck, MapPin, Users, HelpCircle, FileText, S
 export default function App() {
   // Navigation States
   const [activeTab, setActiveTab] = useState<ActiveTab>('beranda');
-  const [activeSubTab, setActiveSubTab] = useState<'dual_witness' | 'sms_correction'>('dual_witness');
-  const [viewMode, setViewMode] = useState<'marketplace' | 'dashboard'>('marketplace');
   
   // Simulation Database States
   const [marketplaceProducts, setMarketplaceProducts] = useState<MarketplaceProduct[]>(initialMarketplaceProducts);
   const [availableSupplies, setAvailableSupplies] = useState<AvailableSupply[]>(initialAvailableSupplies);
   const [neededGoods, setNeededGoods] = useState<NeededGood[]>(initialNeededGoods);
   const [escrowTransactions, setEscrowTransactions] = useState<EscrowTransaction[]>(initialEscrowTransactions);
-  const [smsList, setSmsList] = useState<RawSms[]>(initialRawSms);
   const [opportunities, setOpportunities] = useState<ReturnTripOpportunity[]>(initialReturnTripOpportunities);
   const [truckFleets, setTruckFleets] = useState<TruckFleet[]>(initialTruckFleets);
   const [memberTransactions, setMemberTransactions] = useState<MemberTransaction[]>(initialMemberTransactions);
   const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
+  const [selectedRoleIndex, setSelectedRoleIndex] = useState(0);
+  const currentKoperasi = DEMO_ROLES[selectedRoleIndex].koperasi;
+  const [inventoryViewMode, setInventoryViewMode] = useState<'list' | 'form'>('list');
+
+  const [stocks, setStocks] = useState<StockItem[]>([
+    {
+      id: 'stk-1',
+      komoditas: 'Pupuk Urea Bersubsidi',
+      satuan: 'Ton',
+      berat: 15,
+      hargaBeli: 2250000,
+      images: ['https://images.unsplash.com/photo-1574943320219-553eb213f72d?auto=format&fit=crop&q=80&w=300'],
+      catatan: 'Pupuk alokasi bulan berjalan, kualitas baik.',
+      lastSync: 'Hari ini, 08:30',
+      koperasi: 'Kop. Argosari'
+    },
+    {
+      id: 'stk-2',
+      komoditas: 'Benih Padi Ciherang',
+      satuan: 'Kwintal',
+      berat: 5,
+      hargaBeli: 950000,
+      images: ['https://images.unsplash.com/photo-1595113316349-944122bc158b?auto=format&fit=crop&q=80&w=300'],
+      catatan: 'Sertifikat masih berlaku hingga tahun depan.',
+      lastSync: 'Kemarin, 14:15',
+      koperasi: 'Kop. Tirtomulyo'
+    }
+  ]);
+
+  const handleAddStock = (newStock: Omit<StockItem, 'id' | 'lastSync' | 'koperasi'>) => {
+    const item: StockItem = {
+      ...newStock,
+      id: `stk-${Date.now()}`,
+      lastSync: 'Baru saja',
+      koperasi: currentKoperasi
+    };
+    setStocks(prev => [item, ...prev]);
+  };
+
+  // Notification lists state (Orders and Sells)
+  const [orders, setOrders] = useState<NotificationOrder[]>([
+    {
+      id: 'ORD-001',
+      name: 'Gabah Kering Giling 2.000 kg',
+      quantity: '2.000 kg',
+      totalPrice: 14400000,
+      partnerCooperative: 'Kop. Argosari',
+      status: 'Menunggu konfirmasi',
+      date: 'Hari ini, 09.20',
+      koperasi: Math.random() > 0.5 ? 'Kop. Argosari' : 'Kop. Tirtomulyo'
+    },
+    {
+      id: 'ORD-002',
+      name: 'Pupuk Organik Super Cair 50 botol',
+      quantity: '50 botol',
+      totalPrice: 2500000,
+      partnerCooperative: 'Kop. Tirtomulyo',
+      status: 'diproses',
+      date: 'Kemarin, 14.15',
+      koperasi: Math.random() > 0.5 ? 'Kop. Argosari' : 'Kop. Tirtomulyo'
+    },
+    {
+      id: 'ORD-003',
+      name: 'Benih Padi Unggul Sertifikat 100 kg',
+      quantity: '100 kg',
+      totalPrice: 1800000,
+      partnerCooperative: 'Kop. Suka Makmur',
+      status: 'dikirim',
+      date: '08 Jul, 10.30',
+      koperasi: Math.random() > 0.5 ? 'Kop. Argosari' : 'Kop. Tirtomulyo'
+    },
+    {
+      id: 'ORD-004',
+      name: 'Jagung Manis Pipil Segar 1.500 kg',
+      quantity: '1.500 kg',
+      totalPrice: 9000000,
+      partnerCooperative: 'Kop. Argosari',
+      status: 'selesai',
+      date: '05 Jul, 16.00',
+      koperasi: Math.random() > 0.5 ? 'Kop. Argosari' : 'Kop. Tirtomulyo'
+    },
+    {
+      id: 'ORD-005',
+      name: 'Belerang Sulfur Gunung Ijen 1.000 kg',
+      quantity: '1.000 kg',
+      totalPrice: 3700000,
+      partnerCooperative: 'Kop. Argosari',
+      status: 'bermasalah/sengketa',
+      date: '02 Jul, 11.45',
+      koperasi: Math.random() > 0.5 ? 'Kop. Argosari' : 'Kop. Tirtomulyo'
+    }
+  ]);
+
+  const [sells, setSells] = useState<NotificationOrder[]>([
+    {
+      id: 'SEL-001',
+      name: 'Beras Pandan Wangi Premium 500 kg',
+      quantity: '500 kg',
+      totalPrice: 7500000,
+      partnerCooperative: 'Kop. Tani Jaya',
+      status: 'Menunggu konfirmasi',
+      date: 'Hari ini, 08.45',
+      koperasi: Math.random() > 0.5 ? 'Kop. Argosari' : 'Kop. Tirtomulyo'
+    },
+    {
+      id: 'SEL-002',
+      name: 'Kedelai Putih Unggul 1.200 kg',
+      quantity: '1.200 kg',
+      totalPrice: 12000000,
+      partnerCooperative: 'Kop. Makmur Sejahtera',
+      status: 'diproses',
+      date: 'Kemarin, 11.20',
+      koperasi: Math.random() > 0.5 ? 'Kop. Argosari' : 'Kop. Tirtomulyo'
+    },
+    {
+      id: 'SEL-003',
+      name: 'Cabe Merah Kering Giling 300 kg',
+      quantity: '300 kg',
+      totalPrice: 9000000,
+      partnerCooperative: 'Kop. Agro Lestari',
+      status: 'dikirim',
+      date: '08 Jul, 15.10',
+      koperasi: Math.random() > 0.5 ? 'Kop. Argosari' : 'Kop. Tirtomulyo'
+    },
+    {
+      id: 'SEL-004',
+      name: 'Gabah Basah Berkualitas 3.000 kg',
+      quantity: '3.000 kg',
+      totalPrice: 18000000,
+      partnerCooperative: 'Kop. Tani Makmur',
+      status: 'selesai',
+      date: '04 Jul, 09.15',
+      koperasi: Math.random() > 0.5 ? 'Kop. Argosari' : 'Kop. Tirtomulyo'
+    },
+    {
+      id: 'SEL-005',
+      name: 'Kentang Granola Dataran Tinggi 800 kg',
+      quantity: '800 kg',
+      totalPrice: 8800000,
+      partnerCooperative: 'Kop. Agro Subur',
+      status: 'bermasalah/sengketa',
+      date: '01 Jul, 14.30',
+      koperasi: Math.random() > 0.5 ? 'Kop. Argosari' : 'Kop. Tirtomulyo'
+    }
+  ]);
+
+  const handleUpdateOrderStatus = (id: string, newStatus: NotificationOrder['status']) => {
+    setOrders(prev => prev.map(o => o.id === id ? { ...o, status: newStatus } : o));
+  };
+
+  const handleUpdateSellStatus = (id: string, newStatus: NotificationOrder['status']) => {
+    setSells(prev => prev.map(s => s.id === id ? { ...s, status: newStatus } : s));
+  };
 
   // Settings states
   const [gpsTolerance, setGpsTolerance] = useState('50 meter');
@@ -134,9 +283,23 @@ export default function App() {
       quantity: `${qty.toLocaleString('id-ID')} kg`,
       price: product.price,
       destinationKoperasi: 'Koperasi Pembeli',
-      status: 'Tersedia'
+      status: 'Tersedia',
+      koperasi: currentKoperasi
     };
     setAvailableSupplies(prev => [newSupply, ...prev]);
+
+    // 4. Prepend to active orders in the notification panel!
+    const newOrder: NotificationOrder = {
+      id: `ORD-${Date.now()}`,
+      name: `${product.name} ${qty.toLocaleString('id-ID')} kg`,
+      quantity: `${qty.toLocaleString('id-ID')} kg`,
+      totalPrice: product.price * qty,
+      partnerCooperative: 'Kop. Argosari',
+      status: 'Menunggu konfirmasi',
+      date: 'Baru saja',
+      koperasi: Math.random() > 0.5 ? 'Kop. Argosari' : 'Kop. Tirtomulyo'
+    };
+    setOrders(prev => [newOrder, ...prev]);
   };
 
   // Send supply to buyer
@@ -161,67 +324,36 @@ export default function App() {
     }
   };
 
-  // Correct a failed SMS format
-  const handleCorrectSms = (smsId: string, updatedData: Partial<RawSms>) => {
-    setSmsList(prev => prev.map(s => (s.id === smsId ? { ...s, ...updatedData } : s)));
-
-    // Extract numerical kg from string like "2.000 kg"
-    const parsedKg = parseInt((updatedData.quantity || '0').replace(/[^0-9]/g, ''), 10) || 1000;
-    const parsedPrice = parseInt((updatedData.pricePerKg || '0').replace(/[^0-9]/g, ''), 10) || 7200;
-
-    // Simulate appending this newly recovered record into the Suroto's transaction log!
-    if (smsId === 'sms-1') {
-      const newLedgerRow: MemberTransaction = {
-        id: `TRX-0712-022`,
-        date: '10 Juli 2026',
-        commodity: 'Gabah',
-        quantityKg: parsedKg,
-        pricePerKg: parsedPrice,
-        totalValue: parsedKg * parsedPrice,
-        status: 'SELESAI',
-        location: 'Gudang SinergiDesa (Lat: -8.21, Long: 114.36)',
-        handler: 'Admin Utama (Sistem Koreksi)'
-      };
-      setMemberTransactions(prev => [newLedgerRow, ...prev]);
-    }
-  };
-
-  const handleSendWAClarification = (phone: string, name: string) => {
-    console.log(`Clarification request sent to ${name} (${phone})`);
-  };
+  const computedEscrow = useMemo(() => escrowTransactions.filter(t => t.receiver === currentKoperasi || t.sender === currentKoperasi), [escrowTransactions, currentKoperasi]);
+  const computedMarketplace = useMemo(() => marketplaceProducts.filter(p => p.koperasi === currentKoperasi), [marketplaceProducts, currentKoperasi]);
+  const computedSupplies = useMemo(() => availableSupplies.filter(s => s.koperasi === currentKoperasi || s.destinationKoperasi === currentKoperasi), [availableSupplies, currentKoperasi]);
+  const computedNeeded = useMemo(() => neededGoods.filter(n => n.koperasi === currentKoperasi || n.requesterKoperasi === currentKoperasi), [neededGoods, currentKoperasi]);
+  const computedStocks = useMemo(() => stocks.filter(s => s.koperasi === currentKoperasi), [stocks, currentKoperasi]);
+  const filteredTrucks = useMemo(() => truckFleets.filter(t => t.koperasi === currentKoperasi), [truckFleets, currentKoperasi]);
+  const filteredMemberTrx = useMemo(() => memberTransactions.filter(m => m.koperasi === currentKoperasi), [memberTransactions, currentKoperasi]);
+  const filteredOrders = useMemo(() => orders.filter(o => o.koperasi === currentKoperasi), [orders, currentKoperasi]);
+  const filteredSells = useMemo(() => sells.filter(s => s.koperasi === currentKoperasi), [sells, currentKoperasi]);
+  const filteredOpps = useMemo(() => opportunities.filter(o => o.koperasi === currentKoperasi), [opportunities, currentKoperasi]);
 
   // REACTIVE CALCULATION: Action Items banner list
   const activeActionItems = useMemo(() => {
     const items: ActionItem[] = [];
 
     // Count pending dual-witness items
-    const pendingDualWitnessCount = escrowTransactions.filter(t => !t.receiverConfirmed).length;
+    const pendingDualWitnessCount = computedEscrow.filter(t => !t.receiverConfirmed).length;
     if (pendingDualWitnessCount > 0) {
       items.push({
         id: 'act-1',
         type: 'warning',
         title: `${pendingDualWitnessCount} transaksi menunggu konfirmasi dual-witness`,
-        description: `Terlama: kiriman gabah 2 ton ke Kop. Argosari, menunggu 26 jam`,
+        description: `Terlama: kiriman komoditas ke ${currentKoperasi}, menunggu 26 jam`,
         buttonText: 'Lihat',
         actionKey: 'dual_witness'
       });
     }
 
-    // Count uncorrected SMS logs
-    const uncorrectedSmsCount = smsList.filter(s => !s.isCorrected).length;
-    if (uncorrectedSmsCount > 0) {
-      items.push({
-        id: 'act-2',
-        type: 'error',
-        title: `${uncorrectedSmsCount} pesan gagal diparse, butuh koreksi manual`,
-        description: `Format SMS tidak sesuai standar gateway: komoditas typo atau nilai hilang.`,
-        buttonText: 'Koreksi',
-        actionKey: 'sms_correction'
-      });
-    }
-
     // Check if there are disputes active
-    const activeDisputesCount = escrowTransactions.filter(t => t.isDisputed).length;
+    const activeDisputesCount = computedEscrow.filter(t => t.isDisputed).length;
     if (activeDisputesCount > 0) {
       items.push({
         id: 'act-3',
@@ -234,12 +366,12 @@ export default function App() {
     }
 
     return items;
-  }, [escrowTransactions, smsList]);
+  }, [computedEscrow]);
 
   // REACTIVE CALCULATION: Metrics data cards
   const reactiveMetrics = useMemo(() => {
     // Escrow value calculation (sum of unconfirmed items)
-    const activeEscrowAmount = escrowTransactions
+    const activeEscrowAmount = computedEscrow
       .filter(t => !t.receiverConfirmed)
       .reduce((sum, t) => sum + t.amount, 0);
 
@@ -247,16 +379,16 @@ export default function App() {
       ? `Rp ${(activeEscrowAmount / 1000000).toFixed(1)} jt`
       : formatRupiah(activeEscrowAmount);
 
-    const activeEscrowCount = escrowTransactions.filter(t => !t.receiverConfirmed).length;
+    const activeEscrowCount = computedEscrow.filter(t => !t.receiverConfirmed).length;
 
     // Active fleet calculation
-    const activeTrucks = truckFleets.filter(f => f.status === 'perjalanan').length;
-    const totalTrucks = truckFleets.length;
+    const activeTrucks = filteredTrucks.filter(f => f.status === 'perjalanan').length;
+    const totalTrucks = filteredTrucks.length;
 
     const cards: MetricCard[] = [
       {
         title: 'Transaksi SinergiDesa',
-        value: `${47 + (initialEscrowTransactions.length - escrowTransactions.length)}`,
+        value: `${47 + (initialEscrowTransactions.length - computedEscrow.length)}`,
         subValue: '↑ 18% vs minggu lalu',
         isPositive: true
       },
@@ -267,37 +399,26 @@ export default function App() {
         isWarning: activeEscrowCount > 0
       },
       {
-        title: 'Parse sukses (7 hari)',
-        value: smsList.filter(s => s.isCorrected).length > 0 ? '95%' : '91%',
-        subValue: smsList.filter(s => s.isCorrected).length > 0 ? 'naik dari 91%' : 'turun dari 96%',
-        isPositive: smsList.filter(s => s.isCorrected).length > 0,
-        isWarning: smsList.filter(s => s.isCorrected).length === 0
-      },
-      {
         title: 'Armada aktif',
         value: `${activeTrucks} / ${totalTrucks}`,
-        subValue: `${truckFleets.filter(f => f.status === 'perjalanan').length} truk dalam perjalanan`,
+        subValue: `${filteredTrucks.filter(f => f.status === 'perjalanan').length} truk dalam perjalanan`,
         isPositive: activeTrucks === totalTrucks
       }
     ];
 
     return cards;
-  }, [escrowTransactions, smsList, truckFleets]);
+  }, [computedEscrow, filteredTrucks]);
 
   // Handle CTA button click from the main action banner
-  const handleActionClick = (actionKey: 'dual_witness' | 'sms_correction' | 'dispute') => {
+  const handleActionClick = (actionKey: 'dual_witness' | 'dispute') => {
     setActiveTab('transaksi');
-    if (actionKey === 'sms_correction') {
-      setActiveSubTab('sms_correction');
-    } else {
-      setActiveSubTab('dual_witness');
-    }
   };
 
   // Header dynamic labels
   const headerContent = useMemo(() => {
     switch (activeTab) {
       case 'beranda':
+<<<<<<< HEAD
         return viewMode === 'marketplace'
           ? {
               title: 'Marketplace SinergiDesa',
@@ -311,6 +432,26 @@ export default function App() {
         return {
           title: activeSubTab === 'dual_witness' ? 'Menunggu konfirmasi dual-witness' : 'Koreksi Pesan SMS Gateway',
           subtitle: 'Validasi otomatisasi data timbangan dan SMS'
+=======
+        return {
+          title: 'Dashboard Pengurus SinergiDesa',
+          subtitle: 'Jumat, 10 Juli 2026 · panel pengurus koperasi tani dan manajemen timbangan digital'
+        };
+      case 'marketplace':
+        return {
+          title: 'Marketplace SinergiDesa',
+          subtitle: 'Jumat, 10 Juli 2026 · Katalog komoditas tani unggul, pupuk, dan benih antar koperasi desa'
+        };
+      case 'inventaris':
+        return {
+          title: 'Stok Barang & Inventaris',
+          subtitle: 'Jumat, 10 Juli 2026 · Manajemen stok komoditas dan sinkronisasi data gudang'
+        };
+      case 'transaksi':
+        return {
+          title: 'Menunggu konfirmasi dual-witness',
+          subtitle: 'Validasi otomatisasi data timbangan dan konfirmasi petani'
+>>>>>>> 2673c2c4a0836d0abd178259a51dd82312b4544e
         };
       case 'logistik':
         return {
@@ -333,7 +474,7 @@ export default function App() {
           subtitle: 'Dashboard Pengurus Inti'
         };
     }
-  }, [activeTab, activeSubTab, selectedMemberId, viewMode]);
+  }, [activeTab, selectedMemberId]);
 
   return (
     <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30] flex flex-col md:flex-row antialiased">
@@ -342,15 +483,13 @@ export default function App() {
         activeTab={activeTab}
         setActiveTab={(tab) => {
           setActiveTab(tab);
-          if (tab === 'beranda') {
-            setViewMode('marketplace');
-          }
         }}
-        actionItemCount={activeActionItems.length}
+        actionItemCount={computedEscrow.filter(t => t.receiverConfirmed === false).length}
         onBrandClick={() => {
           setActiveTab('beranda');
-          setViewMode('dashboard');
         }}
+        selectedRoleIndex={selectedRoleIndex}
+        onRoleChange={setSelectedRoleIndex}
       />
 
       {/* Main Content Area */}
@@ -362,74 +501,58 @@ export default function App() {
           onRefresh={handleRefresh}
           showBackButton={activeTab === 'anggota' && !!selectedMemberId}
           onBackClick={() => setSelectedMemberId(null)}
+          orders={orders}
+          sells={sells}
+          onUpdateOrderStatus={handleUpdateOrderStatus}
+          onUpdateSellStatus={handleUpdateSellStatus}
         />
 
         <main className="flex-grow">
           {/* Active Tab Router */}
           {activeTab === 'beranda' && (
-            viewMode === 'marketplace' ? (
-              <MarketplaceView
-                products={marketplaceProducts}
-                onNavigateToDashboard={() => setViewMode('dashboard')}
-                onPurchase={handlePurchaseProduct}
-              />
-            ) : (
-              <DashboardView
-                actionItems={activeActionItems}
-                metrics={reactiveMetrics}
-                availableSupplies={availableSupplies}
-                neededGoods={neededGoods}
-                onActionClick={handleActionClick}
-                onSendSupply={handleSendSupply}
-                onFulfillNeed={handleFulfillNeed}
-                pipelineData={{
-                  incoming: escrowTransactions.filter(t => !t.receiverConfirmed).length + 1,
-                  pending: escrowTransactions.filter(t => !t.receiverConfirmed).length,
-                  ready: escrowTransactions.filter(t => t.receiverConfirmed).length + 2
-                }}
-              />
-            )
+            <DashboardView
+              actionItems={activeActionItems}
+              metrics={reactiveMetrics}
+              availableSupplies={computedSupplies}
+              neededGoods={computedNeeded}
+              onActionClick={handleActionClick}
+              onSendSupply={handleSendSupply}
+              onFulfillNeed={handleFulfillNeed}
+              pipelineData={{
+                incoming: computedEscrow.filter(t => !t.receiverConfirmed).length + 1,
+                pending: computedEscrow.filter(t => !t.receiverConfirmed).length,
+                ready: computedEscrow.filter(t => t.receiverConfirmed).length + 2
+              }}
+            />
+          )}
+
+          {activeTab === 'marketplace' && (
+            <MarketplaceView
+              products={computedMarketplace}
+              onPurchase={handlePurchaseProduct}
+              onNavigateToInputStock={() => {
+                setInventoryViewMode('form');
+                setActiveTab('inventaris');
+              }}
+            />
+          )}
+
+          {activeTab === 'inventaris' && (
+            <InventoryView 
+              stocks={computedStocks}
+              onAddStock={handleAddStock}
+              viewMode={inventoryViewMode}
+              setViewMode={setInventoryViewMode}
+            />
           )}
 
           {activeTab === 'transaksi' && (
             <div className="flex flex-col">
-              {/* Internal Sub-Tabs Navigation */}
-              <div className="px-6 pt-4 border-b border-[#bfc8cc]/60 flex gap-4 bg-white shadow-sm">
-                <button
-                  onClick={() => setActiveSubTab('dual_witness')}
-                  className={`pb-3 text-xs sm:text-sm font-bold border-b-2 transition-all ${
-                    activeSubTab === 'dual_witness'
-                      ? 'border-[#003b49] text-[#003b49]'
-                      : 'border-transparent text-[#40484c] hover:text-[#003b49]'
-                  }`}
-                >
-                  Menunggu Dual-Witness ({escrowTransactions.filter(t => !t.receiverConfirmed).length})
-                </button>
-                <button
-                  onClick={() => setActiveSubTab('sms_correction')}
-                  className={`pb-3 text-xs sm:text-sm font-bold border-b-2 transition-all ${
-                    activeSubTab === 'sms_correction'
-                      ? 'border-[#003b49] text-[#003b49]'
-                      : 'border-transparent text-[#40484c] hover:text-[#003b49]'
-                  }`}
-                >
-                  Koreksi Pesan SMS Gateway ({smsList.filter(s => !s.isCorrected).length})
-                </button>
-              </div>
-
-              {activeSubTab === 'dual_witness' ? (
-                <DualWitnessView
-                  transactions={escrowTransactions}
-                  onUpdateTransaction={handleUpdateTransaction}
-                  onEscalateDispute={handleEscalateDispute}
-                />
-              ) : (
-                <MessageCorrectionView
-                  smsList={smsList}
-                  onCorrectSms={handleCorrectSms}
-                  onSendClarification={handleSendWAClarification}
-                />
-              )}
+              <DualWitnessView
+                transactions={computedEscrow}
+                onUpdateTransaction={handleUpdateTransaction}
+                onEscalateDispute={handleEscalateDispute}
+              />
             </div>
           )}
 
@@ -446,13 +569,13 @@ export default function App() {
                   </p>
                 </div>
                 <span className="bg-[#eff4ff] text-[#006780] border border-[#bfc8cc]/40 px-3.5 py-1.5 rounded-xl text-xs font-bold">
-                  Armada Beroperasi: {truckFleets.filter(f => f.status === 'perjalanan').length} / {truckFleets.length}
+                  Armada Beroperasi: {filteredTrucks.filter(f => f.status === 'perjalanan').length} / {filteredTrucks.length}
                 </span>
               </div>
 
               {/* Fleet List Grid */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {truckFleets.map((fleet) => (
+                {filteredTrucks.map((fleet) => (
                   <div
                     key={fleet.id}
                     className="bg-white rounded-2xl border border-[#bfc8cc] p-5 flex flex-col gap-4 shadow-sm hover:shadow-md transition-shadow duration-200"
@@ -504,7 +627,7 @@ export default function App() {
                   </div>
                 ) : (
                   <div className="divide-y divide-[#bfc8cc]/40">
-                    {opportunities.map((opp) => (
+                    {filteredOpps.map((opp) => (
                       <div key={opp.id} className="p-4 flex justify-between items-center hover:bg-[#eff4ff]/20 transition-all">
                         <div>
                           <p className="font-bold text-[#0b1c30] text-sm">{opp.route}</p>
@@ -533,7 +656,7 @@ export default function App() {
             <div className="p-0">
               {selectedMemberId ? (
                 <MemberHistoryView
-                  memberTransactions={memberTransactions}
+                  memberTransactions={filteredMemberTrx}
                   onBackClick={() => setSelectedMemberId(null)}
                 />
               ) : (

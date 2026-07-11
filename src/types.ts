@@ -1,4 +1,4 @@
-export type ActiveTab = 'beranda' | 'transaksi' | 'logistik' | 'anggota' | 'laporan' | 'pengaturan';
+export type ActiveTab = 'beranda' | 'transaksi' | 'logistik' | 'anggota' | 'laporan' | 'pengaturan' | 'marketplace' | 'inventaris';
 
 export interface ActionItem {
   id: string;
@@ -6,7 +6,7 @@ export interface ActionItem {
   title: string;
   description: string;
   buttonText: string;
-  actionKey: 'dual_witness' | 'sms_correction' | 'dispute';
+  actionKey: 'dual_witness' | 'dispute';
 }
 
 export interface MetricCard {
@@ -36,20 +36,6 @@ export interface EscrowTransaction {
   isDisputed?: boolean;
 }
 
-export interface RawSms {
-  id: string;
-  rawText: string;
-  senderPhone: string;
-  senderName: string;
-  receivedTime: string;
-  action: 'JUAL' | 'BELI';
-  commodity: string;
-  typoDetected?: string;
-  quantity: string;
-  pricePerKg: string;
-  isCorrected: boolean;
-}
-
 export interface MemberTransaction {
   id: string;
   date: string;
@@ -60,6 +46,7 @@ export interface MemberTransaction {
   status: 'SELESAI' | 'BERJALAN';
   location: string;
   handler: string;
+  koperasi: string;
 }
 
 export interface ReturnTripOpportunity {
@@ -68,6 +55,7 @@ export interface ReturnTripOpportunity {
   potentialSavings: string; // e.g. Potensi hemat Rp 450rb
   deadlineBadge: string; // e.g. JAWAB < 5 JAM
   isAmber?: boolean;
+  koperasi: string;
 }
 
 export interface MarketplaceProduct {
@@ -78,6 +66,7 @@ export interface MarketplaceProduct {
   category: 'Hasil Tani' | 'Pupuk & Obat' | 'Benih' | 'Peralatan';
   image: string;
   description: string;
+  koperasi: string;
 }
 
 export interface AvailableSupply {
@@ -87,6 +76,7 @@ export interface AvailableSupply {
   price: number;
   destinationKoperasi: string;
   status: 'Tersedia' | 'Siap Kirim' | 'Terkirim';
+  koperasi: string;
 }
 
 export interface NeededGood {
@@ -96,6 +86,7 @@ export interface NeededGood {
   targetPrice: number;
   requesterKoperasi: string;
   urgency: 'Tinggi' | 'Sedang' | 'Rendah';
+  koperasi: string;
 }
 
 export interface TruckFleet {
@@ -106,4 +97,28 @@ export interface TruckFleet {
   status: 'perjalanan' | 'standby' | 'bongkar';
   currentRoute?: string;
   loadType?: string;
+  koperasi: string;
+}
+
+export interface StockItem {
+  id: string;
+  komoditas: string;
+  satuan: string;
+  berat: number;
+  hargaBeli: number;
+  images: string[];
+  catatan: string;
+  lastSync: string;
+  koperasi: string;
+}
+
+export interface NotificationOrder {
+  id: string;
+  name: string;
+  quantity: string;
+  totalPrice: number;
+  partnerCooperative: string;
+  status: 'Menunggu konfirmasi' | 'diproses' | 'dikirim' | 'selesai' | 'bermasalah/sengketa';
+  date: string;
+  koperasi: string;
 }

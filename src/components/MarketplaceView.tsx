@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { Search, ShoppingCart, Filter, ArrowRight, ShieldCheck, CheckCircle, Info, Sparkles, AlertCircle, ShoppingBag } from 'lucide-react';
+import { Search, ShoppingCart, Filter, ArrowRight, ShieldCheck, CheckCircle, Info, Sparkles, AlertCircle, ShoppingBag, PackagePlus } from 'lucide-react';
 import { MarketplaceProduct } from '../types';
 
 interface MarketplaceViewProps {
   products: MarketplaceProduct[];
-  onNavigateToDashboard: () => void;
   onPurchase: (product: MarketplaceProduct, qty: number) => void;
+  onNavigateToInputStock: () => void;
 }
 
 export default function MarketplaceView({
   products,
-  onNavigateToDashboard,
   onPurchase,
+  onNavigateToInputStock,
 }: MarketplaceViewProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>('Semua');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -64,44 +64,8 @@ export default function MarketplaceView({
         </div>
       )}
 
-      {/* Hero Welcome & Name Switcher Banner */}
-      <section className="bg-gradient-to-r from-[#003b49] via-[#005c73] to-[#0a4d5c] text-white rounded-3xl p-6 sm:p-8 relative overflow-hidden shadow-lg border border-[#60d7ff]/10">
-        <div className="absolute right-0 top-0 bottom-0 w-1/3 opacity-15 pointer-events-none bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-yellow-300 via-teal-500 to-transparent rounded-full" />
-        
-        <div className="max-w-2xl relative z-10">
-          <span className="inline-flex items-center gap-1.5 bg-[#60d7ff]/20 text-[#60d7ff] text-[10px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full border border-[#60d7ff]/20 mb-4">
-            <Sparkles className="w-3.5 h-3.5 animate-pulse" /> Hub Koperasi Desa Digital
-          </span>
-          
-          <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight mb-2">
-            Selamat Datang di <span onClick={onNavigateToDashboard} className="underline decoration-wavy decoration-[#60d7ff] cursor-pointer hover:text-[#60d7ff] transition-all" title="Klik untuk membuka Dashboard Pengurus">SinergiDesa</span>
-          </h2>
-          
-          <p className="text-xs sm:text-sm text-gray-200 mb-6 leading-relaxed">
-            Marketplace digital terpercaya yang menyatukan seluruh komoditas tani unggul, pupuk subsidi tervalidasi, dan benih bersertifikat antar desa.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-3">
-            <button
-              onClick={onNavigateToDashboard}
-              className="bg-white text-[#003b49] font-bold text-xs sm:text-sm px-5 py-3 rounded-xl hover:bg-gray-100 transition-all flex items-center justify-center gap-2 shadow-md active:scale-95"
-            >
-              Masuk ke Dashboard Pengurus <ArrowRight className="w-4 h-4 text-[#006780]" />
-            </button>
-            <div className="flex items-center gap-2 text-xs text-gray-300 bg-black/20 px-4 py-2.5 rounded-xl border border-white/5 justify-center sm:justify-start">
-              <ShieldCheck className="w-4 h-4 text-[#60d7ff]" /> Verified Escrow Protection
-            </div>
-          </div>
-        </div>
-
-        {/* Small hint label */}
-        <div className="absolute bottom-3 right-4 text-[10px] text-gray-300/80 hidden lg:block">
-          💡 Klik judul <span onClick={onNavigateToDashboard} className="underline font-bold text-white hover:text-[#60d7ff] cursor-pointer transition-colors">SinergiDesa</span> untuk berpindah ke Panel Pengurus Koperasi
-        </div>
-      </section>
-
       {/* Filter & Search Bar */}
-      <section className="bg-white p-4 rounded-2xl border border-[#bfc8cc] shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
+      <section className="bg-white p-4 rounded-2xl border border-[#bfc8cc] shadow-sm flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4">
         {/* Category Buttons */}
         <div className="flex flex-wrap gap-1.5 w-full md:w-auto">
           {categories.map((cat) => (
@@ -119,16 +83,24 @@ export default function MarketplaceView({
           ))}
         </div>
 
-        {/* Search Input */}
-        <div className="relative w-full md:w-80 shrink-0">
-          <input
-            type="text"
-            placeholder="Cari komoditas, pupuk, atau benih..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-[#f8f9ff] border border-[#bfc8cc] rounded-xl pl-9 pr-4 py-2 text-xs sm:text-sm font-semibold focus:border-[#003b49] focus:ring-2 focus:ring-[#003b49]/10 outline-none transition-all"
-          />
-          <Search className="w-4 h-4 text-[#70787c] absolute left-3 top-1/2 -translate-y-1/2" />
+        {/* Search Input and Input Stock Button */}
+        <div className="flex flex-col md:flex-row w-full xl:w-auto items-stretch md:items-center gap-3">
+          <div className="relative w-full md:w-64 lg:w-80">
+            <input
+              type="text"
+              placeholder="Cari komoditas, pupuk, atau benih..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-[#f8f9ff] border border-[#bfc8cc] rounded-xl pl-9 pr-4 py-2 text-xs sm:text-sm font-semibold focus:border-[#003b49] focus:ring-2 focus:ring-[#003b49]/10 outline-none transition-all"
+            />
+            <Search className="w-4 h-4 text-[#70787c] absolute left-3 top-1/2 -translate-y-1/2" />
+          </div>
+          <button 
+            onClick={onNavigateToInputStock}
+            className="shrink-0 whitespace-nowrap bg-[#003b49] text-white px-4 py-2 rounded-xl text-xs sm:text-sm font-bold shadow-sm hover:bg-[#005c73] transition-all flex justify-center items-center gap-2"
+          >
+            <PackagePlus className="w-4 h-4" /> Input Stok
+          </button>
         </div>
       </section>
 

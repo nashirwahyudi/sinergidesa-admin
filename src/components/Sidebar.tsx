@@ -1,19 +1,34 @@
 import React, { useState } from 'react';
-import { LayoutDashboard, Receipt, Truck, Users, Settings, LogOut, Menu, X, Leaf, Sparkles } from 'lucide-react';
+import { LayoutDashboard, Receipt, Truck, Users, Settings, LogOut, Menu, X, Leaf, Sparkles, ShoppingBag, PackagePlus } from 'lucide-react';
 import { ActiveTab } from '../types';
+
+export interface DemoRole {
+  name: string;
+  location: string;
+  koperasi: string;
+}
+
+export const DEMO_ROLES: DemoRole[] = [
+  { name: 'Admin Kop. Argosari', location: 'Banyuwangi', koperasi: 'Kop. Argosari' },
+  { name: 'Admin Kop. Tirtomulyo', location: 'Jember', koperasi: 'Kop. Tirtomulyo' },
+];
 
 interface SidebarProps {
   activeTab: ActiveTab;
   setActiveTab: (tab: ActiveTab) => void;
   actionItemCount: number;
-  onBrandClick?: () => void;
+  onBrandClick: () => void;
+  selectedRoleIndex: number;
+  onRoleChange: (index: number) => void;
 }
 
-export default function Sidebar({ activeTab, setActiveTab, actionItemCount, onBrandClick }: SidebarProps) {
+export default function Sidebar({ activeTab, setActiveTab, actionItemCount, onBrandClick, selectedRoleIndex, onRoleChange }: SidebarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const mainNavItems = [
     { id: 'beranda' as ActiveTab, label: 'Beranda', icon: LayoutDashboard },
+    { id: 'marketplace' as ActiveTab, label: 'Marketplace', icon: ShoppingBag },
+    { id: 'inventaris' as ActiveTab, label: 'Stok Barang', icon: PackagePlus },
     { id: 'transaksi' as ActiveTab, label: 'Transaksi', icon: Receipt, badge: actionItemCount > 0 ? actionItemCount : undefined },
     { id: 'logistik' as ActiveTab, label: 'Logistik', icon: Truck },
     { id: 'anggota' as ActiveTab, label: 'Anggota', icon: Users },
@@ -79,16 +94,17 @@ export default function Sidebar({ activeTab, setActiveTab, actionItemCount, onBr
         </div>
 
         {/* User Info inside Drawer */}
-        <div className="flex items-center gap-3 p-2 bg-[#eff4ff] rounded-lg">
-          <img
-            src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150"
-            alt="Admin Avatar"
-            className="w-10 h-10 rounded-full object-cover border border-[#bfc8cc]"
-          />
-          <div>
-            <h4 className="font-semibold text-sm text-[#003b49]">Admin Koperasi</h4>
-            <p className="text-xs text-[#40484c]">Pengurus Inti</p>
-          </div>
+        <div className="flex flex-col gap-2 p-3 bg-white border border-[#bfc8cc]/40 rounded-xl">
+          <label className="text-[10px] font-bold text-[#40484c] uppercase tracking-wider">Peran Aktif (Demo)</label>
+          <select 
+            value={selectedRoleIndex}
+            onChange={(e) => onRoleChange(Number(e.target.value))}
+            className="w-full bg-[#f8f9ff] border border-[#bfc8cc] rounded-lg px-2 py-1.5 text-xs font-bold text-[#003b49] outline-none focus:border-[#003b49] cursor-pointer"
+          >
+            {DEMO_ROLES.map((role, idx) => (
+              <option key={idx} value={idx}>{role.name} ({role.location})</option>
+            ))}
+          </select>
         </div>
 
         {/* Navigation items in Drawer */}
@@ -120,25 +136,7 @@ export default function Sidebar({ activeTab, setActiveTab, actionItemCount, onBr
           })}
         </nav>
 
-        {/* Footer items in Drawer */}
-        <div className="border-t border-[#bfc8cc] pt-4 flex flex-col gap-1">
-          <button
-            onClick={() => handleNavClick('pengaturan')}
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-              activeTab === 'pengaturan' ? 'bg-[#60d7ff]/20 text-[#005c73]' : 'text-[#40484c] hover:bg-[#eff4ff]'
-            }`}
-          >
-            <Settings className="w-5 h-5" />
-            <span>Pengaturan</span>
-          </button>
-          <button
-            onClick={() => alert('Sesi berakhir. Mensimulasikan logout...')}
-            className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-[#ba1a1a] hover:bg-[#ffdad6]/40 transition-all"
-          >
-            <LogOut className="w-5 h-5" />
-            <span>Keluar</span>
-          </button>
-        </div>
+        {/* Footer items removed */}
       </aside>
 
       {/* Desktop Sidebar (visible on md+) */}
@@ -159,16 +157,17 @@ export default function Sidebar({ activeTab, setActiveTab, actionItemCount, onBr
         </div>
 
         {/* Administrator Profile Card */}
-        <div className="flex items-center gap-3 px-3 py-2 bg-white/60 rounded-xl border border-[#bfc8cc]/30">
-          <img
-            src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150"
-            alt="Admin Avatar"
-            className="w-10 h-10 rounded-full object-cover border border-[#bfc8cc]"
-          />
-          <div>
-            <h4 className="font-bold text-xs text-[#003b49]">Admin Koperasi</h4>
-            <p className="text-[10px] text-[#40484c]">Pengurus Inti</p>
-          </div>
+        <div className="flex flex-col gap-2 p-3 bg-white/60 rounded-xl border border-[#bfc8cc]/30 shadow-sm">
+          <label className="text-[10px] font-bold text-[#40484c] uppercase tracking-wider">Peran Aktif (Demo)</label>
+          <select 
+            value={selectedRoleIndex}
+            onChange={(e) => onRoleChange(Number(e.target.value))}
+            className="w-full bg-white border border-[#bfc8cc] rounded-lg px-2 py-2 text-xs font-bold text-[#003b49] outline-none focus:border-[#003b49] shadow-sm cursor-pointer"
+          >
+            {DEMO_ROLES.map((role, idx) => (
+              <option key={idx} value={idx}>{role.name} ({role.location})</option>
+            ))}
+          </select>
         </div>
 
         {/* Navigation Items list */}
@@ -202,27 +201,7 @@ export default function Sidebar({ activeTab, setActiveTab, actionItemCount, onBr
           })}
         </nav>
 
-        {/* Sidebar Footer with Settings & Logout */}
-        <div className="mt-auto border-t border-[#bfc8cc]/60 pt-4 flex flex-col gap-1.5">
-          <button
-            onClick={() => handleNavClick('pengaturan')}
-            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all ${
-              activeTab === 'pengaturan'
-                ? 'bg-[#003b49] text-white'
-                : 'text-[#40484c] hover:bg-white/40'
-            }`}
-          >
-            <Settings className="w-5 h-5 text-[#40484c]" />
-            <span>Pengaturan</span>
-          </button>
-          <button
-            onClick={() => alert('Sesi berakhir. Mensimulasikan logout...')}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-[#ba1a1a] hover:bg-[#ffdad6]/40 transition-all text-left"
-          >
-            <LogOut className="w-5 h-5 text-[#ba1a1a]" />
-            <span>Keluar</span>
-          </button>
-        </div>
+        {/* Sidebar Footer removed */}
       </aside>
 
       {/* Mobile Sticky Bottom Navigation (visible only on mobile) */}

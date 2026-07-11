@@ -6,4 +6,8 @@ coverage/
 *.log
 .env*
 !.env.example
+<<<<<<< HEAD
 package.lock.json
+=======
+package.lock.json
+>>>>>>> 2673c2c4a0836d0abd178259a51dd82312b4544e

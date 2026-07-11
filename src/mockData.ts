@@ -1,4 +1,4 @@
-import { ActionItem, EscrowTransaction, RawSms, MemberTransaction, ReturnTripOpportunity, TruckFleet, MarketplaceProduct, AvailableSupply, NeededGood } from './types';
+import { ActionItem, EscrowTransaction, MemberTransaction, ReturnTripOpportunity, TruckFleet, MarketplaceProduct, AvailableSupply, NeededGood } from './types';
 
 export const initialActionItems: ActionItem[] = [
   {
@@ -10,18 +10,10 @@ export const initialActionItems: ActionItem[] = [
     actionKey: 'dual_witness'
   },
   {
-    id: 'act-2',
-    type: 'error',
-    title: '2 pesan gagal diparse, butuh koreksi manual',
-    description: "SMS dari +62 812-****-4432: 'Kirim gabah 5 ton...' [Gagal]",
-    buttonText: 'Koreksi',
-    actionKey: 'sms_correction'
-  },
-  {
     id: 'act-3',
     type: 'gavel',
     title: '1 sengketa escrow tertahan 2 hari',
-    description: 'Penerima menolak konfirmasi muatan belerang 5 ton · dana Rp 18,5 jt terkunci',
+    description: 'Penerima menolak konfirmasi muatan belerang 5 ton · dana Rp 18,5 jt tertahan',
     buttonText: 'Tangani',
     actionKey: 'dispute'
   }
@@ -79,35 +71,6 @@ export const initialEscrowTransactions: EscrowTransaction[] = [
   }
 ];
 
-export const initialRawSms: RawSms[] = [
-  {
-    id: 'sms-1',
-    rawText: 'JUAL#GABH#2TON#RP11500',
-    senderPhone: '+62 812-****-4432',
-    senderName: 'Bapak Suroto',
-    receivedTime: '10 Juli, 08:45 WIB',
-    action: 'JUAL',
-    commodity: 'GABAH',
-    typoDetected: 'GABH',
-    quantity: '2.000 kg',
-    pricePerKg: 'Rp 11.500',
-    isCorrected: false
-  },
-  {
-    id: 'sms-2',
-    rawText: 'BELI#PUPK#500KG#RP9000',
-    senderPhone: '+62 857-****-1109',
-    senderName: 'Ibu Warsi',
-    receivedTime: '10 Juli, 09:12 WIB',
-    action: 'BELI',
-    commodity: 'PUPUK',
-    typoDetected: 'PUPK',
-    quantity: '500 kg',
-    pricePerKg: 'Rp 9.000',
-    isCorrected: false
-  }
-];
-
 export const initialMemberTransactions: MemberTransaction[] = [
   {
     id: 'TRX-0712-018',
@@ -118,7 +81,8 @@ export const initialMemberTransactions: MemberTransaction[] = [
     totalValue: 9000000,
     status: 'SELESAI',
     location: 'Gudang Pusat Sumberrejo (Lat: -8.21, Long: 114.36)',
-    handler: 'Budi Santoso (Staf Logistik)'
+    handler: 'Budi Santoso (Staf Logistik)',
+    koperasi: 'Kop. Argosari'
   },
   {
     id: 'TRX-0712-019',
@@ -129,7 +93,8 @@ export const initialMemberTransactions: MemberTransaction[] = [
     totalValue: 4400000,
     status: 'SELESAI',
     location: 'Gudang B Tirtomulyo (Lat: -8.23, Long: 114.37)',
-    handler: 'Slamet Riyadi (Staf Logistik)'
+    handler: 'Slamet Riyadi (Staf Logistik)',
+    koperasi: 'Kop. Argosari'
   },
   {
     id: 'TRX-0712-020',
@@ -140,7 +105,8 @@ export const initialMemberTransactions: MemberTransaction[] = [
     totalValue: 14300000,
     status: 'BERJALAN',
     location: 'Gudang Pusat Sumberrejo (Lat: -8.21, Long: 114.36)',
-    handler: 'Budi Santoso (Staf Logistik)'
+    handler: 'Budi Santoso (Staf Logistik)',
+    koperasi: 'Kop. Argosari'
   },
   {
     id: 'TRX-0712-021',
@@ -151,7 +117,57 @@ export const initialMemberTransactions: MemberTransaction[] = [
     totalValue: 7920000,
     status: 'SELESAI',
     location: 'Gudang C Argosari (Lat: -8.19, Long: 114.32)',
-    handler: 'Siti Rahma (Administrasi)'
+    handler: 'Siti Rahma (Administrasi)',
+    koperasi: 'Kop. Argosari'
+  }
+,
+  {
+    id: 'TRX-0712-018-2',
+    date: '24 Mei 2024',
+    commodity: 'Gabah',
+    quantityKg: 1250,
+    pricePerKg: 7200,
+    totalValue: 9000000,
+    status: 'SELESAI',
+    location: 'Gudang Pusat Sumberrejo (Lat: -8.21, Long: 114.36)',
+    handler: 'Budi Santoso (Staf Logistik)',
+    koperasi: 'Kop. Tirtomulyo'
+  },
+  {
+    id: 'TRX-0712-019-2',
+    date: '22 Mei 2024',
+    commodity: 'Jagung',
+    quantityKg: 800,
+    pricePerKg: 5500,
+    totalValue: 4400000,
+    status: 'SELESAI',
+    location: 'Gudang B Tirtomulyo (Lat: -8.23, Long: 114.37)',
+    handler: 'Slamet Riyadi (Staf Logistik)',
+    koperasi: 'Kop. Tirtomulyo'
+  },
+  {
+    id: 'TRX-0712-020-2',
+    date: '20 Mei 2024',
+    commodity: 'Gabah',
+    quantityKg: 2000,
+    pricePerKg: 7150,
+    totalValue: 14300000,
+    status: 'BERJALAN',
+    location: 'Gudang Pusat Sumberrejo (Lat: -8.21, Long: 114.36)',
+    handler: 'Budi Santoso (Staf Logistik)',
+    koperasi: 'Kop. Tirtomulyo'
+  },
+  {
+    id: 'TRX-0712-021-2',
+    date: '18 Mei 2024',
+    commodity: 'Gabah',
+    quantityKg: 1100,
+    pricePerKg: 7200,
+    totalValue: 7920000,
+    status: 'SELESAI',
+    location: 'Gudang C Argosari (Lat: -8.19, Long: 114.32)',
+    handler: 'Siti Rahma (Administrasi)',
+    koperasi: 'Kop. Tirtomulyo'
   }
 ];
 
@@ -161,14 +177,33 @@ export const initialReturnTripOpportunities: ReturnTripOpportunity[] = [
     route: 'Surabaya → Sumberrejo (Besok)',
     potentialSavings: 'Potensi hemat Rp 450rb',
     deadlineBadge: 'jawab < 5 jam',
-    isAmber: true
+    isAmber: true,
+    koperasi: 'Kop. Argosari'
   },
   {
     id: 'opp-2',
     route: 'Malang → Sumberrejo (Senin)',
     potentialSavings: 'Potensi hemat Rp 320rb',
     deadlineBadge: 'jawab < 2 hari',
-    isAmber: false
+    isAmber: false,
+    koperasi: 'Kop. Argosari'
+  }
+,
+  {
+    id: 'opp-1-2',
+    route: 'Surabaya → Sumberrejo (Besok)',
+    potentialSavings: 'Potensi hemat Rp 450rb',
+    deadlineBadge: 'jawab < 5 jam',
+    isAmber: true,
+    koperasi: 'Kop. Tirtomulyo'
+  },
+  {
+    id: 'opp-2-2',
+    route: 'Malang → Sumberrejo (Senin)',
+    potentialSavings: 'Potensi hemat Rp 320rb',
+    deadlineBadge: 'jawab < 2 hari',
+    isAmber: false,
+    koperasi: 'Kop. Tirtomulyo'
   }
 ];
 
@@ -180,7 +215,8 @@ export const initialTruckFleets: TruckFleet[] = [
     capacity: '5 Ton',
     status: 'perjalanan',
     currentRoute: 'Sumberrejo → Argosari',
-    loadType: 'Gabah'
+    loadType: 'Gabah',
+    koperasi: 'Kop. Argosari'
   },
   {
     id: 'fleet-2',
@@ -189,7 +225,8 @@ export const initialTruckFleets: TruckFleet[] = [
     capacity: '3 Ton',
     status: 'bongkar',
     currentRoute: 'Gudang Tirtomulyo',
-    loadType: 'Pupuk'
+    loadType: 'Pupuk',
+    koperasi: 'Kop. Argosari'
   },
   {
     id: 'fleet-3',
@@ -198,7 +235,39 @@ export const initialTruckFleets: TruckFleet[] = [
     capacity: '5 Ton',
     status: 'standby',
     currentRoute: 'Garasi Utama',
-    loadType: 'Kosong'
+    loadType: 'Kosong',
+    koperasi: 'Kop. Argosari'
+  }
+,
+  {
+    id: 'fleet-1-2',
+    plateNumber: 'N 8412 UT',
+    driver: 'Supardi',
+    capacity: '5 Ton',
+    status: 'perjalanan',
+    currentRoute: 'Sumberrejo → Argosari',
+    loadType: 'Gabah',
+    koperasi: 'Kop. Tirtomulyo'
+  },
+  {
+    id: 'fleet-2-2',
+    plateNumber: 'N 9031 UA',
+    driver: 'Edi Santoso',
+    capacity: '3 Ton',
+    status: 'bongkar',
+    currentRoute: 'Gudang Tirtomulyo',
+    loadType: 'Pupuk',
+    koperasi: 'Kop. Tirtomulyo'
+  },
+  {
+    id: 'fleet-3-2',
+    plateNumber: 'N 1152 UB',
+    driver: 'Kusnan',
+    capacity: '5 Ton',
+    status: 'standby',
+    currentRoute: 'Garasi Utama',
+    loadType: 'Kosong',
+    koperasi: 'Kop. Tirtomulyo'
   }
 ];
 
@@ -210,7 +279,8 @@ export const initialMarketplaceProducts: MarketplaceProduct[] = [
     quantity: '15.000 kg',
     category: 'Hasil Tani',
     image: 'https://images.unsplash.com/photo-1574325131876-a7999dc65f3f?auto=format&fit=crop&q=80&w=400',
-    description: 'Gabah kering giling berkualitas super dengan kadar air < 14%. Hasil panen kelompok tani Suka Makmur Sumberrejo.'
+    description: 'Gabah kering giling berkualitas super dengan kadar air < 14%. Hasil panen kelompok tani Suka Makmur Sumberrejo.',
+    koperasi: 'Kop. Argosari'
   },
   {
     id: 'prod-2',
@@ -219,7 +289,8 @@ export const initialMarketplaceProducts: MarketplaceProduct[] = [
     quantity: '8.500 kg',
     category: 'Hasil Tani',
     image: 'https://images.unsplash.com/photo-1551754626-787a241688ed?auto=format&fit=crop&q=80&w=400',
-    description: 'Jagung pipil kering dengan kadar air rendah, sangat cocok untuk kebutuhan pakan ternak maupun pengolahan industri.'
+    description: 'Jagung pipil kering dengan kadar air rendah, sangat cocok untuk kebutuhan pakan ternak maupun pengolahan industri.',
+    koperasi: 'Kop. Argosari'
   },
   {
     id: 'prod-3',
@@ -228,7 +299,8 @@ export const initialMarketplaceProducts: MarketplaceProduct[] = [
     quantity: '4.200 kg',
     category: 'Hasil Tani',
     image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400',
-    description: 'Beras aromatik khas Pandan Wangi, pulen alami tanpa bahan pemutih atau pengawet kimiawi.'
+    description: 'Beras aromatik khas Pandan Wangi, pulen alami tanpa bahan pemutih atau pengawet kimiawi.',
+    koperasi: 'Kop. Argosari'
   },
   {
     id: 'prod-4',
@@ -237,7 +309,8 @@ export const initialMarketplaceProducts: MarketplaceProduct[] = [
     quantity: '12.000 kg',
     category: 'Pupuk & Obat',
     image: 'https://images.unsplash.com/photo-1599599810769-bcde5a160d32?auto=format&fit=crop&q=80&w=400',
-    description: 'Pupuk urea subsidi jatah kelompok tani Sumberrejo untuk penyuburan tanaman padi dan hortikultura.'
+    description: 'Pupuk urea subsidi jatah kelompok tani Sumberrejo untuk penyuburan tanaman padi dan hortikultura.',
+    koperasi: 'Kop. Argosari'
   },
   {
     id: 'prod-5',
@@ -246,7 +319,8 @@ export const initialMarketplaceProducts: MarketplaceProduct[] = [
     quantity: '350 kg',
     category: 'Benih',
     image: 'https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&q=80&w=400',
-    description: 'Benih padi ciherang bersertifikat, tahan hama wereng coklat dengan potensi hasil tinggi per hektar.'
+    description: 'Benih padi ciherang bersertifikat, tahan hama wereng coklat dengan potensi hasil tinggi per hektar.',
+    koperasi: 'Kop. Argosari'
   },
   {
     id: 'prod-6',
@@ -255,7 +329,69 @@ export const initialMarketplaceProducts: MarketplaceProduct[] = [
     quantity: '2.800 kg',
     category: 'Hasil Tani',
     image: 'https://images.unsplash.com/photo-1597362925123-77861d3fbac7?auto=format&fit=crop&q=80&w=400',
-    description: 'Kedelai lokal kualitas premium dengan ukuran biji seragam, ideal untuk bahan baku tempe dan tahu berkualitas.'
+    description: 'Kedelai lokal kualitas premium dengan ukuran biji seragam, ideal untuk bahan baku tempe dan tahu berkualitas.',
+    koperasi: 'Kop. Argosari'
+  }
+,
+  {
+    id: 'prod-1-2',
+    name: 'Gabah Kering Giling (GKG) Premium',
+    price: 7200,
+    quantity: '15.000 kg',
+    category: 'Hasil Tani',
+    image: 'https://images.unsplash.com/photo-1574325131876-a7999dc65f3f?auto=format&fit=crop&q=80&w=400',
+    description: 'Gabah kering giling berkualitas super dengan kadar air < 14%. Hasil panen kelompok tani Suka Makmur Sumberrejo.',
+    koperasi: 'Kop. Tirtomulyo'
+  },
+  {
+    id: 'prod-2-2',
+    name: 'Jagung Pipil Kering Grade A',
+    price: 5500,
+    quantity: '8.500 kg',
+    category: 'Hasil Tani',
+    image: 'https://images.unsplash.com/photo-1551754626-787a241688ed?auto=format&fit=crop&q=80&w=400',
+    description: 'Jagung pipil kering dengan kadar air rendah, sangat cocok untuk kebutuhan pakan ternak maupun pengolahan industri.',
+    koperasi: 'Kop. Tirtomulyo'
+  },
+  {
+    id: 'prod-3-2',
+    name: 'Beras Pandan Wangi Premium',
+    price: 15000,
+    quantity: '4.200 kg',
+    category: 'Hasil Tani',
+    image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=400',
+    description: 'Beras aromatik khas Pandan Wangi, pulen alami tanpa bahan pemutih atau pengawet kimiawi.',
+    koperasi: 'Kop. Tirtomulyo'
+  },
+  {
+    id: 'prod-4-2',
+    name: 'Pupuk Urea Subsidi TSP',
+    price: 2250,
+    quantity: '12.000 kg',
+    category: 'Pupuk & Obat',
+    image: 'https://images.unsplash.com/photo-1599599810769-bcde5a160d32?auto=format&fit=crop&q=80&w=400',
+    description: 'Pupuk urea subsidi jatah kelompok tani Sumberrejo untuk penyuburan tanaman padi dan hortikultura.',
+    koperasi: 'Kop. Tirtomulyo'
+  },
+  {
+    id: 'prod-5-2',
+    name: 'Benih Unggul Padi Ciherang',
+    price: 45000,
+    quantity: '350 kg',
+    category: 'Benih',
+    image: 'https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?auto=format&fit=crop&q=80&w=400',
+    description: 'Benih padi ciherang bersertifikat, tahan hama wereng coklat dengan potensi hasil tinggi per hektar.',
+    koperasi: 'Kop. Tirtomulyo'
+  },
+  {
+    id: 'prod-6-2',
+    name: 'Kedelai Lokal Bola Kuning',
+    price: 11000,
+    quantity: '2.800 kg',
+    category: 'Hasil Tani',
+    image: 'https://images.unsplash.com/photo-1597362925123-77861d3fbac7?auto=format&fit=crop&q=80&w=400',
+    description: 'Kedelai lokal kualitas premium dengan ukuran biji seragam, ideal untuk bahan baku tempe dan tahu berkualitas.',
+    koperasi: 'Kop. Tirtomulyo'
   }
 ];
 
@@ -266,7 +402,8 @@ export const initialAvailableSupplies: AvailableSupply[] = [
     quantity: '15 Ton',
     price: 7200,
     destinationKoperasi: 'Kop. Argosari',
-    status: 'Tersedia'
+    status: 'Tersedia',
+    koperasi: 'Kop. Argosari'
   },
   {
     id: 'sup-2',
@@ -274,7 +411,8 @@ export const initialAvailableSupplies: AvailableSupply[] = [
     quantity: '8 Ton',
     price: 5500,
     destinationKoperasi: 'Kop. Tirtomulyo',
-    status: 'Siap Kirim'
+    status: 'Siap Kirim',
+    koperasi: 'Kop. Argosari'
   },
   {
     id: 'sup-3',
@@ -282,7 +420,36 @@ export const initialAvailableSupplies: AvailableSupply[] = [
     quantity: '5 Ton',
     price: 15000,
     destinationKoperasi: 'Kop. Karya Tani',
-    status: 'Terkirim'
+    status: 'Terkirim',
+    koperasi: 'Kop. Argosari'
+  }
+,
+  {
+    id: 'sup-1-2',
+    name: 'Gabah GKG Premium',
+    quantity: '15 Ton',
+    price: 7200,
+    destinationKoperasi: 'Kop. Tirtomulyo',
+    status: 'Tersedia',
+    koperasi: 'Kop. Tirtomulyo'
+  },
+  {
+    id: 'sup-2-2',
+    name: 'Jagung Pipil Kering',
+    quantity: '8 Ton',
+    price: 5500,
+    destinationKoperasi: 'Kop. Tirtomulyo',
+    status: 'Siap Kirim',
+    koperasi: 'Kop. Tirtomulyo'
+  },
+  {
+    id: 'sup-3-2',
+    name: 'Beras Pandan Wangi',
+    quantity: '5 Ton',
+    price: 15000,
+    destinationKoperasi: 'Kop. Karya Tani',
+    status: 'Terkirim',
+    koperasi: 'Kop. Tirtomulyo'
   }
 ];
 
@@ -293,7 +460,8 @@ export const initialNeededGoods: NeededGood[] = [
     quantityNeeded: '12 Ton',
     targetPrice: 2250,
     requesterKoperasi: 'Kop. Argo Makmur',
-    urgency: 'Tinggi'
+    urgency: 'Tinggi',
+    koperasi: 'Kop. Argosari'
   },
   {
     id: 'need-2',
@@ -301,7 +469,8 @@ export const initialNeededGoods: NeededGood[] = [
     quantityNeeded: '500 kg',
     targetPrice: 12000,
     requesterKoperasi: 'Kop. Subur Tani',
-    urgency: 'Sedang'
+    urgency: 'Sedang',
+    koperasi: 'Kop. Argosari'
   },
   {
     id: 'need-3',
@@ -309,7 +478,8 @@ export const initialNeededGoods: NeededGood[] = [
     quantityNeeded: '2.000 Liter',
     targetPrice: 6800,
     requesterKoperasi: 'Kop. Argosari',
-    urgency: 'Tinggi'
+    urgency: 'Tinggi',
+    koperasi: 'Kop. Argosari'
   },
   {
     id: 'need-4',
@@ -317,6 +487,44 @@ export const initialNeededGoods: NeededGood[] = [
     quantityNeeded: '3 Unit',
     targetPrice: 8500000,
     requesterKoperasi: 'Kop. Tani Makmur',
-    urgency: 'Rendah'
+    urgency: 'Rendah',
+    koperasi: 'Kop. Argosari'
+  }
+,
+  {
+    id: 'need-1-2',
+    name: 'Pupuk Urea Subsidi',
+    quantityNeeded: '12 Ton',
+    targetPrice: 2250,
+    requesterKoperasi: 'Kop. Argo Makmur',
+    urgency: 'Tinggi',
+    koperasi: 'Kop. Tirtomulyo'
+  },
+  {
+    id: 'need-2-2',
+    name: 'Benih Padi IR64',
+    quantityNeeded: '500 kg',
+    targetPrice: 12000,
+    requesterKoperasi: 'Kop. Subur Tani',
+    urgency: 'Sedang',
+    koperasi: 'Kop. Tirtomulyo'
+  },
+  {
+    id: 'need-3-2',
+    name: 'BBM Solar Subsidi',
+    quantityNeeded: '2.000 Liter',
+    targetPrice: 6800,
+    requesterKoperasi: 'Kop. Tirtomulyo',
+    urgency: 'Tinggi',
+    koperasi: 'Kop. Tirtomulyo'
+  },
+  {
+    id: 'need-4-2',
+    name: 'Alat Perontok Padi',
+    quantityNeeded: '3 Unit',
+    targetPrice: 8500000,
+    requesterKoperasi: 'Kop. Tani Makmur',
+    urgency: 'Rendah',
+    koperasi: 'Kop. Tirtomulyo'
   }
 ];
