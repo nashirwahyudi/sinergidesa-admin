@@ -136,25 +136,7 @@ export default function Sidebar({ activeTab, setActiveTab, actionItemCount, onBr
           })}
         </nav>
 
-        {/* Footer items in Drawer */}
-        <div className="border-t border-[#bfc8cc] pt-4 flex flex-col gap-1">
-          <button
-            onClick={() => handleNavClick('pengaturan')}
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-              activeTab === 'pengaturan' ? 'bg-[#60d7ff]/20 text-[#005c73]' : 'text-[#40484c] hover:bg-[#eff4ff]'
-            }`}
-          >
-            <Settings className="w-5 h-5" />
-            <span>Pengaturan</span>
-          </button>
-          <button
-            onClick={() => alert('Sesi berakhir. Mensimulasikan logout...')}
-            className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-[#ba1a1a] hover:bg-[#ffdad6]/40 transition-all"
-          >
-            <LogOut className="w-5 h-5" />
-            <span>Keluar</span>
-          </button>
-        </div>
+        {/* Footer items removed */}
       </aside>
 
       {/* Desktop Sidebar (visible on md+) */}
@@ -219,27 +201,7 @@ export default function Sidebar({ activeTab, setActiveTab, actionItemCount, onBr
           })}
         </nav>
 
-        {/* Sidebar Footer with Settings & Logout */}
-        <div className="mt-auto border-t border-[#bfc8cc]/60 pt-4 flex flex-col gap-1.5">
-          <button
-            onClick={() => handleNavClick('pengaturan')}
-            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all ${
-              activeTab === 'pengaturan'
-                ? 'bg-[#003b49] text-white'
-                : 'text-[#40484c] hover:bg-white/40'
-            }`}
-          >
-            <Settings className="w-5 h-5 text-[#40484c]" />
-            <span>Pengaturan</span>
-          </button>
-          <button
-            onClick={() => alert('Sesi berakhir. Mensimulasikan logout...')}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-[#ba1a1a] hover:bg-[#ffdad6]/40 transition-all text-left"
-          >
-            <LogOut className="w-5 h-5 text-[#ba1a1a]" />
-            <span>Keluar</span>
-          </button>
-        </div>
+        {/* Sidebar Footer removed */}
       </aside>
 
       {/* Mobile Sticky Bottom Navigation (visible only on mobile) */}

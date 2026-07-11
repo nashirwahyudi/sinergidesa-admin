@@ -127,7 +127,7 @@ export default function DashboardView({
       </section>
 
       {/* Metric Row Grid */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {metrics.map((metric, i) => (
           <div
             key={i}

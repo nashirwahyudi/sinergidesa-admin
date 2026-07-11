@@ -399,12 +399,6 @@ export default function App() {
         isWarning: activeEscrowCount > 0
       },
       {
-        title: 'Validasi Otomatis (7 hari)',
-        value: '99%',
-        subValue: 'naik dari 95%',
-        isPositive: true,
-      },
-      {
         title: 'Armada aktif',
         value: `${activeTrucks} / ${totalTrucks}`,
         subValue: `${filteredTrucks.filter(f => f.status === 'perjalanan').length} truk dalam perjalanan`,
